@@ -16,6 +16,40 @@
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<!-- ─── ORANGE STRIPES PRELOADER (#E85B1A) WITH LOGO & UNDERLINE ─── -->
+<div id="preloader" class="preloader-overlay" aria-label="شاشة التحميل">
+  <!-- Cascading Vertical Orange Stripes (#E85B1A) -->
+  <div class="preloader-stripes" id="preloaderStripes">
+    <div class="loader-stripe"></div>
+    <div class="loader-stripe"></div>
+    <div class="loader-stripe"></div>
+    <div class="loader-stripe"></div>
+    <div class="loader-stripe"></div>
+  </div>
+
+  <!-- Central Brand Hero (Frameless & Organic, No Container Box) -->
+  <div class="preloader-brand-hero" id="preloaderBrand">
+    <div class="preloader-logo-wrap">
+      <img src="assets/logo-white.png" alt="شعار ميون" class="preloader-logo-img" />
+      <span class="preloader-logo-sheen"></span>
+    </div>
+
+    <div class="preloader-brand-copy">
+      <h2 class="preloader-company-name">شركة ميون للمقاولات والخدمات اللوجستية</h2>
+      <p class="preloader-tagline">MYON CONTRACTING &amp; LOGISTICS</p>
+    </div>
+
+    <!-- Animated Underline & Progress Meter -->
+    <div class="preloader-line-meter">
+      <div class="preloader-track">
+        <div class="preloader-bar" id="loaderBar"></div>
+      </div>
+      <div class="preloader-counter-wrap">
+        <span class="preloader-counter" id="loaderPercent">00%</span>
+      </div>
+    </div>
+  </div>
+</div>
 <div id="ambient"></div>
 <div id="glow"></div>
 <div id="vignette"></div>
@@ -37,7 +71,7 @@
   </button>
 </header>
 <main>
-<section id="hero" data-ambient="#0D0D0D" data-glow=".45">
+<section id="hero" data-ambient="#FFFFFF" data-glow=".18">
   <div class="stage" id="heroStage">
     <canvas id="heroCanvas" aria-hidden="true"></canvas>
     <div class="hero-aura" id="heroAura" aria-hidden="true"></div>
@@ -76,7 +110,7 @@
     <span class="ticker-item">مقاولات وإنشاءات</span><span class="ticker-item">Contracting</span><span class="ticker-item">خدمات النقل</span><span class="ticker-item">Logistics</span><span class="ticker-item">الخدمات النفطية</span><span class="ticker-item">Oil Services</span><span class="ticker-item">التخليص الجمركي</span><span class="ticker-item">Customs Clearance</span><span class="ticker-item">مقاولات وإنشاءات</span><span class="ticker-item">Contracting</span><span class="ticker-item">خدمات النقل</span><span class="ticker-item">Logistics</span><span class="ticker-item">الخدمات النفطية</span><span class="ticker-item">Oil Services</span><span class="ticker-item">التخليص الجمركي</span><span class="ticker-item">Customs Clearance</span>
   </div>
 </div>
-<section id="services" data-ambient="#111111" data-glow=".3">
+<section id="services" data-ambient="#F9FAFC" data-glow=".12">
   <div class="wrap">
     <div class="section-head">
       <span class="idx reveal">٠١ — خدماتنا</span>
@@ -119,7 +153,7 @@
     </div>
   </div>
 </section>
-<section id="why" data-ambient="#0F0F0F" data-glow=".35">
+<section id="why" data-ambient="#F6F7FA" data-glow=".15">
   <div class="wrap">
     <div class="why-grid">
       <div class="why-visual reveal-left">
@@ -153,7 +187,7 @@
     </div>
   </div>
 </section>
-<section id="stats" data-ambient="#0A0A0A" data-glow=".2">
+<section id="stats" data-ambient="#FFFFFF" data-glow=".1">
   <div class="wrap">
     <div class="stats-grid">
       <div class="stat-item reveal" data-count="10" data-suffix="+"><div class="stat-num"><span class="count-val">0</span><span class="stat-suffix">+</span></div><div class="stat-label">عملاء يثقون بنا</div></div>
@@ -163,7 +197,7 @@
     </div>
   </div>
 </section>
-<section id="process" data-ambient="#111111" data-glow=".28">
+<section id="process" data-ambient="#F8F9FB" data-glow=".14">
   <div class="wrap">
     <div class="process-head">
       <span class="idx reveal">٠٣ — كيف نعمل</span>
@@ -195,7 +229,7 @@
   </div>
 </section>
 <!-- ─── PREVIOUS WORK EXPERIENCE: 3D MAP OF YEMEN ─── -->
-<section id="experience" data-ambient="#0C0D11" data-glow=".42">
+<section id="experience" data-ambient="#F4F6F9" data-glow=".2">
   <div class="wrap">
     <div class="section-head text-center experience-head">
       <span class="idx reveal">٠٤ — خبراتنا ومشاريعنا السابقة</span>
@@ -293,7 +327,7 @@
   </div>
 </section>
 
-<section id="cta" data-ambient="#0D0D0D" data-glow=".5">
+<section id="cta" data-ambient="#FFFFFF" data-glow=".22">
   <div class="wrap">
     <div class="cta-block">
       <div class="cta-bg-glow" aria-hidden="true"></div>

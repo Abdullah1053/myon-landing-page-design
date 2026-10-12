@@ -30,6 +30,110 @@
     );
   }
 
+  /* ═══════════════════════════════════════════════════════════
+     MYON ORANGE STRIPES (#E85B1A) PRELOADER & BRAND HERO
+     ═══════════════════════════════════════════════════════════ */
+  (function initFigmaMotionPreloader() {
+    const preloader = document.getElementById("preloader");
+    if (!preloader) return;
+
+    const percentEl = document.getElementById("loaderPercent");
+    const barEl = document.getElementById("loaderBar");
+    const stripes = document.querySelectorAll(".loader-stripe");
+    const brandHero = document.getElementById("preloaderBrand");
+
+    // Lock page scrolling during initial load
+    document.body.style.overflow = "hidden";
+    if (window.lenis) window.lenis.stop();
+
+    let count = 0;
+    const target = 100;
+    const duration = 1800; // 1.8 seconds smooth progress
+    const startTime = performance.now();
+
+    function updatePreloader(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+      // Figma cubic ease-out
+      const eased = Math.min(1, 1.001 - Math.pow(2, -10 * progress));
+      count = Math.floor(eased * target);
+
+      if (percentEl) percentEl.textContent = (count < 10 ? "0" : "") + count + "%";
+      if (barEl) barEl.style.width = (eased * 100) + "%";
+
+      if (progress < 1) {
+        requestAnimationFrame(updatePreloader);
+      } else {
+        // Complete state
+        if (percentEl) percentEl.textContent = "100%";
+        if (barEl) barEl.style.width = "100%";
+
+        setTimeout(finishPreloader, 220);
+      }
+    }
+
+    requestAnimationFrame(updatePreloader);
+
+    function finishPreloader() {
+      // Unlock scroll
+      document.body.style.overflow = "";
+      if (window.lenis) window.lenis.start();
+
+      if (hasGSAP && stripes.length > 0) {
+        const exitTl = gsap.timeline();
+
+        // 1. Brand hero (logo image, title, tagline, underline progress) completely fades & scales down FIRST
+        if (brandHero) {
+          exitTl.to(brandHero, {
+            opacity: 0,
+            y: -22,
+            scale: 0.94,
+            duration: 0.4,
+            ease: "power2.inOut"
+          });
+        }
+
+        // 2. Cascading Orange Stripes wipe upward AFTER brand hero is completely gone
+        exitTl.to(stripes, {
+          yPercent: -100,
+          duration: 0.82,
+          stagger: 0.07,
+          ease: "power4.inOut",
+          onComplete: () => {
+            preloader.style.display = "none";
+            ScrollTrigger.refresh();
+          }
+        }, "+=0.06");
+
+        // 3. Staggered Hero entrance as stripes open
+        exitTl.fromTo("#hero .hero-inner", 
+          { opacity: 0, y: 32 }, 
+          { opacity: 1, y: 0, duration: 1.05, ease: "power3.out" },
+          "-=0.55"
+        );
+      } else {
+        if (brandHero) {
+          brandHero.style.transition = "opacity 0.35s ease, transform 0.35s ease";
+          brandHero.style.opacity = "0";
+          brandHero.style.transform = "scale(0.94)";
+        }
+        setTimeout(() => {
+          preloader.classList.add("loaded");
+          if (hasGSAP) {
+            ScrollTrigger.refresh();
+            gsap.fromTo("#hero .hero-inner", 
+              { opacity: 0, y: 35 }, 
+              { opacity: 1, y: 0, duration: 1.1, ease: "power3.out", delay: 0.2 }
+            );
+          }
+          setTimeout(() => {
+            preloader.style.display = "none";
+          }, 900);
+        }, 400);
+      }
+    }
+  })();
+
   /* ─── HEADER + PROGRESS ─── */
   const header = document.getElementById("header");
   const progress = document.getElementById("progress");
@@ -97,7 +201,7 @@
       const geo = new THREE.BufferGeometry();
       geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
       geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
-      const mat = new THREE.PointsMaterial({ size: 0.025, vertexColors: true, transparent: true, opacity: 0.7, sizeAttenuation: true, depthWrite: false, blending: THREE.AdditiveBlending });
+      const mat = new THREE.PointsMaterial({ size: 0.024, vertexColors: true, transparent: true, opacity: 0.65, sizeAttenuation: true, depthWrite: false, blending: THREE.NormalBlending });
       const particles = new THREE.Points(geo, mat);
       scene.add(particles);
       let mx = 0, my = 0;
@@ -116,21 +220,21 @@
       if (!canvas) return;
       const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setClearColor(0x0F0F0F, 1);
+      renderer.setClearColor(0xF6F7FA, 1);
       const scene = new THREE.Scene();
-      scene.fog = new THREE.Fog(0x0F0F0F, 5, 18);
+      scene.fog = new THREE.Fog(0xF6F7FA, 5, 18);
       const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 100);
       camera.position.set(0, 1, 6);
       function resize() { const w = canvas.clientWidth, h = canvas.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
       resize();
       window.addEventListener("resize", resize, { passive: true });
-      scene.add(new THREE.AmbientLight(0x222222, 1));
+      scene.add(new THREE.AmbientLight(0xffffff, 0.85));
       const oLight = new THREE.PointLight(0xE85B1A, 4, 12); oLight.position.set(2, 2, 3); scene.add(oLight);
-      const rim = new THREE.DirectionalLight(0xffffff, 0.5); rim.position.set(-3, 4, -2); scene.add(rim);
-      const grid = new THREE.GridHelper(20, 20, 0x222222, 0x181818); grid.position.y = -2.2; scene.add(grid);
+      const rim = new THREE.DirectionalLight(0xfff5ea, 0.8); rim.position.set(-3, 4, -2); scene.add(rim);
+      const grid = new THREE.GridHelper(20, 20, 0xDCE0E6, 0xEAEEF3); grid.position.y = -2.2; scene.add(grid);
       const group = new THREE.Group(); scene.add(group);
-      const baseMat = new THREE.MeshStandardMaterial({ color: 0x1C1C1C, metalness: 0.7, roughness: 0.3, emissive: 0xE85B1A, emissiveIntensity: 0.08 });
-      const edgeMat = new THREE.LineBasicMaterial({ color: 0xE85B1A, transparent: true, opacity: 0.7 });
+      const baseMat = new THREE.MeshStandardMaterial({ color: 0xC74A10, metalness: 0.35, roughness: 0.28, emissive: 0x8A2E05, emissiveIntensity: 0.14 });
+      const edgeMat = new THREE.LineBasicMaterial({ color: 0xFF7A33, transparent: true, opacity: 0.95 });
       function addCube(x, y, z, sx, sy, sz, em) {
         const geo = new THREE.BoxGeometry(sx, sy, sz);
         const m = baseMat.clone(); m.emissiveIntensity = em || 0.08;
@@ -139,7 +243,7 @@
         return mesh;
       }
       const c1 = addCube(0,0,0,1.4,1.4,1.4,.12), c2 = addCube(-1.2,-.5,-.4,.8,.8,.8,.06), c3 = addCube(1.1,.6,-.6,.6,.6,.6,.15), c4 = addCube(.4,-1.1,.3,.5,.5,.5,.1);
-      const torus = new THREE.Mesh(new THREE.TorusGeometry(.4,.04,8,32), new THREE.MeshStandardMaterial({ color: 0xE85B1A, emissive: 0xE85B1A, emissiveIntensity: .5 }));
+      const torus = new THREE.Mesh(new THREE.TorusGeometry(.4,.04,8,32), new THREE.MeshStandardMaterial({ color: 0xC74A10, emissive: 0xE85B1A, emissiveIntensity: .7 }));
       torus.position.set(0, 2.2, 0); torus.rotation.x = Math.PI/2; scene.add(torus);
       function animate(t) {
         requestAnimationFrame(animate);
@@ -286,8 +390,8 @@
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
     
-    let targetZoom = 19.8;
-    let currentZoom = 19.8;
+    let targetZoom = 18.2;
+    let currentZoom = 18.2;
     const MIN_ZOOM = 13.0;
     const MAX_ZOOM = 28.0;
 
@@ -306,18 +410,18 @@
     window.addEventListener("resize", resizeCanvas, { passive: true });
 
     /* Lighting */
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.72);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xfff5ea, 1.2);
+    const sunLight = new THREE.DirectionalLight(0xfffaf4, 1.3);
     sunLight.position.set(14, 22, 18);
     scene.add(sunLight);
 
-    const rimOrange = new THREE.DirectionalLight(0xE85B1A, 2.2);
+    const rimOrange = new THREE.DirectionalLight(0xE85B1A, 1.8);
     rimOrange.position.set(-16, -8, 12);
     scene.add(rimOrange);
 
-    const fillBlue = new THREE.DirectionalLight(0x385575, 0.5);
+    const fillBlue = new THREE.DirectionalLight(0x76889e, 0.4);
     fillBlue.position.set(6, -16, -10);
     scene.add(fillBlue);
 
@@ -326,8 +430,8 @@
     scene.add(mapGroup);
 
     // Initial cinematic isometric orientation
-    const DEFAULT_ROT_X = -0.94;
-    const DEFAULT_ROT_Y = 0.08;
+    const DEFAULT_ROT_X = 0.0;
+    const DEFAULT_ROT_Y = 0.0;
     let targetRotX = DEFAULT_ROT_X;
     let currentRotX = DEFAULT_ROT_X;
     let targetRotY = DEFAULT_ROT_Y;
@@ -340,15 +444,15 @@
     const pedestalGroup = new THREE.Group();
     pedestalGroup.position.set(0, 0, -0.04);
 
-    const ringMat1 = new THREE.MeshBasicMaterial({ color: 0xE85B1A, transparent: true, opacity: 0.22, side: THREE.DoubleSide });
+    const ringMat1 = new THREE.MeshBasicMaterial({ color: 0xC74A10, transparent: true, opacity: 0.42, side: THREE.DoubleSide });
     const ringGeo1 = new THREE.RingGeometry(9.6, 9.64, 64);
     pedestalGroup.add(new THREE.Mesh(ringGeo1, ringMat1));
 
-    const ringMat2 = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.08, side: THREE.DoubleSide });
+    const ringMat2 = new THREE.MeshBasicMaterial({ color: 0xE85B1A, transparent: true, opacity: 0.3, side: THREE.DoubleSide });
     const ringGeo2 = new THREE.RingGeometry(7.4, 7.43, 64);
     pedestalGroup.add(new THREE.Mesh(ringGeo2, ringMat2));
 
-    const ringMat3 = new THREE.MeshBasicMaterial({ color: 0xE85B1A, transparent: true, opacity: 0.12, side: THREE.DoubleSide });
+    const ringMat3 = new THREE.MeshBasicMaterial({ color: 0x943206, transparent: true, opacity: 0.25, side: THREE.DoubleSide });
     const ringGeo3 = new THREE.RingGeometry(11.8, 11.84, 64);
     pedestalGroup.add(new THREE.Mesh(ringGeo3, ringMat3));
 
@@ -359,8 +463,8 @@
     const sctx = canvasShadow.getContext("2d");
     const sgrad = sctx.createRadialGradient(128, 128, 10, 128, 128, 120);
     sgrad.addColorStop(0, "rgba(232, 91, 26, 0.18)");
-    sgrad.addColorStop(0.4, "rgba(10, 10, 14, 0.65)");
-    sgrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+    sgrad.addColorStop(0.45, "rgba(148, 50, 6, 0.16)");
+    sgrad.addColorStop(1, "rgba(255, 255, 255, 0)");
     sctx.fillStyle = sgrad;
     sctx.fillRect(0, 0, 256, 256);
 
@@ -374,14 +478,16 @@
 
     /* Materials for Governorates */
     const govMatFront = new THREE.MeshStandardMaterial({
-      color: 0x22242a,
-      roughness: 0.52,
-      metalness: 0.28
+      color: 0xC74A10,
+      roughness: 0.38,
+      metalness: 0.32,
+      emissive: 0x8A2E05,
+      emissiveIntensity: 0.12
     });
     const govMatSide = new THREE.MeshStandardMaterial({
-      color: 0x141518,
-      roughness: 0.38,
-      metalness: 0.62
+      color: 0x943206,
+      roughness: 0.32,
+      metalness: 0.48
     });
 
     const govMeshMap = new Map(); // govId -> array of meshes
@@ -438,7 +544,7 @@
 
         // Top border edges
         const edgesGeom = new THREE.EdgesGeometry(geom, 30);
-        const lineMat = new THREE.LineBasicMaterial({ color: 0x3d414a, transparent: true, opacity: 0.75 });
+        const lineMat = new THREE.LineBasicMaterial({ color: 0xFF7A33, transparent: true, opacity: 0.9 });
         const lineSeg = new THREE.LineSegments(edgesGeom, lineMat);
         mesh.add(lineSeg);
 
@@ -473,9 +579,9 @@
       markerGroup.add(pulseMesh);
 
       // 2. Light Pillar
-      const pillarGeo = new THREE.CylinderGeometry(0.035, 0.035, 1.1, 16);
+      const pillarGeo = new THREE.CylinderGeometry(0.03, 0.03, 0.35, 16);
       pillarGeo.rotateX(Math.PI / 2);
-      pillarGeo.translate(0, 0, 0.55);
+      pillarGeo.translate(0, 0, 0.18);
       const pillarMat = new THREE.MeshStandardMaterial({
         color: 0xFF6B2B,
         emissive: 0xE85B1A,
@@ -488,7 +594,7 @@
       markerGroup.add(pillarMesh);
 
       // 3. Floating Diamond Beacon
-      const beaconGeo = new THREE.OctahedronGeometry(0.18, 0);
+      const beaconGeo = new THREE.OctahedronGeometry(0.14, 0);
       const beaconMat = new THREE.MeshStandardMaterial({
         color: 0xFF7A3D,
         emissive: 0xE85B1A,
@@ -497,7 +603,7 @@
         metalness: 0.3
       });
       const beaconMesh = new THREE.Mesh(beaconGeo, beaconMat);
-      beaconMesh.position.set(0, 0, 1.25);
+      beaconMesh.position.set(0, 0, 0.45);
       markerGroup.add(beaconMesh);
 
       mapGroup.add(markerGroup);
@@ -529,7 +635,7 @@
         beacon: beaconMesh,
         pulseRing: pulseMesh,
         pinEl: pinEl,
-        baseZ: 1.25
+        baseZ: 0.45
       });
     });
 
@@ -609,21 +715,21 @@
         const lines = govLinesMap.get(g.id) || [];
         meshes.forEach(m => {
           if (isTarget) {
-            m.userData.frontMat.color.setHex(0x352b22);
+            m.userData.frontMat.color.setHex(0xFF6B2B);
             m.userData.frontMat.emissive.setHex(0xE85B1A);
-            m.userData.frontMat.emissiveIntensity = 0.35;
+            m.userData.frontMat.emissiveIntensity = 0.65;
           } else {
-            m.userData.frontMat.color.setHex(0x22242a);
-            m.userData.frontMat.emissive.setHex(0x000000);
-            m.userData.frontMat.emissiveIntensity = 0;
+            m.userData.frontMat.color.setHex(0xC74A10);
+            m.userData.frontMat.emissive.setHex(0x8A2E05);
+            m.userData.frontMat.emissiveIntensity = 0.12;
           }
         });
         lines.forEach(l => {
           if (isTarget) {
-            l.material.color.setHex(0xFF6B2B);
+            l.material.color.setHex(0xFFFFFF);
             l.material.opacity = 1.0;
           } else {
-            l.material.color.setHex(0x3d414a);
+            l.material.color.setHex(0xFF7A33);
             l.material.opacity = 0.75;
           }
         });
@@ -768,7 +874,7 @@
       resetBtn.addEventListener("click", () => {
         targetRotX = DEFAULT_ROT_X;
         targetRotY = DEFAULT_ROT_Y;
-        targetZoom = 19.8;
+        targetZoom = 18.2;
       });
     }
 
@@ -814,7 +920,7 @@
       targetRotY += dx * 0.0055;
       targetRotX += dy * 0.0045;
       // Clamp X rotation to keep map viewable from top/isometric
-      targetRotX = Math.max(-1.35, Math.min(-0.45, targetRotX));
+      targetRotX = Math.max(-0.65, Math.min(0.65, targetRotX));
     }, { passive: true });
 
     window.addEventListener("pointerup", () => {
@@ -834,10 +940,54 @@
       targetZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, targetZoom));
     }, { passive: false });
 
-    /* Raycasting on Governorate meshes */
+    /* Raycasting & Hover on Governorate meshes */
     const raycaster = new THREE.Raycaster();
     const mousePos = new THREE.Vector2();
-    let hoveredMesh = null;
+    let hoveredGovId = null;
+
+    function resetGovHover(govId) {
+      if (!govId) return;
+      const isSelected = (govId === projects[currentProjIdx].govId);
+      const meshes = govMeshMap.get(govId) || [];
+      const lines = govLinesMap.get(govId) || [];
+      meshes.forEach(m => {
+        if (isSelected) {
+          m.userData.frontMat.color.setHex(0xFF6B2B);
+          m.userData.frontMat.emissive.setHex(0xE85B1A);
+          m.userData.frontMat.emissiveIntensity = 0.65;
+        } else {
+          m.userData.frontMat.color.setHex(0xC74A10);
+          m.userData.frontMat.emissive.setHex(0x8A2E05);
+          m.userData.frontMat.emissiveIntensity = 0.12;
+        }
+      });
+      lines.forEach(l => {
+        if (isSelected) {
+          l.material.color.setHex(0xFFFFFF);
+          l.material.opacity = 1.0;
+        } else {
+          l.material.color.setHex(0xFF7A33);
+          l.material.opacity = 0.75;
+        }
+      });
+    }
+
+    function applyGovHover(govId) {
+      if (!govId) return;
+      const isSelected = (govId === projects[currentProjIdx].govId);
+      if (isSelected) return; // Keep active selected styling
+      const meshes = govMeshMap.get(govId) || [];
+      const lines = govLinesMap.get(govId) || [];
+      meshes.forEach(m => {
+        m.userData.frontMat.color.setHex(0xE05818);
+        m.userData.frontMat.emissive.setHex(0xFF7A33);
+        m.userData.frontMat.emissiveIntensity = 0.42;
+      });
+      lines.forEach(l => {
+        l.material.color.setHex(0xFFFFFF);
+        l.material.opacity = 0.95;
+      });
+    }
 
     stage.addEventListener("pointermove", e => {
       const rect = stage.getBoundingClientRect();
@@ -849,48 +999,32 @@
 
       if (intersects.length > 0) {
         const hit = intersects[0].object;
-        if (hoveredMesh !== hit) {
-          if (hoveredMesh && hoveredMesh.userData) {
-            const isSelected = (hoveredMesh.userData.govId === projects[currentProjIdx].govId);
-            if (!isSelected) {
-              hoveredMesh.userData.frontMat.color.setHex(0x22242a);
-              hoveredMesh.userData.frontMat.emissive.setHex(0x000000);
-              hoveredMesh.userData.frontMat.emissiveIntensity = 0;
-            }
-          }
-          hoveredMesh = hit;
-          stage.style.cursor = "pointer";
+        const currentId = hit.userData ? hit.userData.govId : null;
 
-          // Tooltip
-          if (tooltip && hit.userData) {
-            const govName = hit.userData.nameAr;
-            const relatedProj = projects.find(p => p.govId === hit.userData.govId);
-            tooltip.style.display = "block";
-            tooltip.style.left = (e.clientX - rect.left) + "px";
-            tooltip.style.top = (e.clientY - rect.top) + "px";
-            tooltip.innerHTML = `
-              <div class="tt-title">📍 ${govName}</div>
-              <div class="tt-sub">${relatedProj ? relatedProj.title : "محافظة يمنية — نطاق التغطية"}</div>
-            `;
-          }
+        if (hoveredGovId !== currentId) {
+          if (hoveredGovId) resetGovHover(hoveredGovId);
+          hoveredGovId = currentId;
+          if (hoveredGovId) applyGovHover(hoveredGovId);
+        }
 
-          // Subtle glow
-          hit.userData.frontMat.color.setHex(0x2d251f);
-          hit.userData.frontMat.emissive.setHex(0xE85B1A);
-          hit.userData.frontMat.emissiveIntensity = 0.25;
-        } else if (tooltip) {
+        stage.style.cursor = "pointer";
+
+        // Tooltip
+        if (tooltip && hit.userData) {
+          const govName = hit.userData.nameAr;
+          const relatedProj = projects.find(p => p.govId === hit.userData.govId);
+          tooltip.style.display = "block";
           tooltip.style.left = (e.clientX - rect.left) + "px";
           tooltip.style.top = (e.clientY - rect.top) + "px";
+          tooltip.innerHTML = `
+            <div class="tt-title">📍 ${govName}</div>
+            <div class="tt-sub">${relatedProj ? relatedProj.title : "محافظة يمنية — نطاق التغطية"}</div>
+          `;
         }
       } else {
-        if (hoveredMesh && hoveredMesh.userData) {
-          const isSelected = (hoveredMesh.userData.govId === projects[currentProjIdx].govId);
-          if (!isSelected) {
-            hoveredMesh.userData.frontMat.color.setHex(0x22242a);
-            hoveredMesh.userData.frontMat.emissive.setHex(0x000000);
-            hoveredMesh.userData.frontMat.emissiveIntensity = 0;
-          }
-          hoveredMesh = null;
+        if (hoveredGovId) {
+          resetGovHover(hoveredGovId);
+          hoveredGovId = null;
         }
         stage.style.cursor = isPointerDown ? "grabbing" : "grab";
         if (tooltip) tooltip.style.display = "none";
@@ -898,7 +1032,12 @@
     }, { passive: true });
 
     stage.addEventListener("pointerleave", () => {
+      if (hoveredGovId) {
+        resetGovHover(hoveredGovId);
+        hoveredGovId = null;
+      }
       if (tooltip) tooltip.style.display = "none";
+      stage.style.cursor = "default";
     }, { passive: true });
 
     stage.addEventListener("click", e => {
@@ -962,7 +1101,7 @@
           const h = stage.clientHeight;
           const sx = (vProj.x * 0.5 + 0.5) * w;
           const sy = (-vProj.y * 0.5 + 0.5) * h;
-          m.pinEl.style.transform = `translate3d(${sx.toFixed(1)}px, ${sy.toFixed(1)}px, 0)`;
+          m.pinEl.style.transform = `translate3d(${sx.toFixed(1)}px, ${sy.toFixed(1)}px, 0) translate(-50%, -100%)`;
           m.pinEl.style.display = "flex";
         } else {
           m.pinEl.style.display = "none";
