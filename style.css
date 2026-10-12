@@ -1196,3 +1196,676 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--orange);outline-off
   font-variant-numeric: tabular-nums;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
+
+
+/* ═══════════════════════════════════════════════════════════
+   MYON THEATRICAL SCROLL STAGE & 3D ISOMETRIC SVG CONTAINER
+   Apple-grade continuous 320vh scroll choreography
+   ═══════════════════════════════════════════════════════════ */
+
+.hero-scroll-stage {
+  position: relative;
+  height: 320vh;
+  background: #FFFFFF;
+  z-index: 3;
+}
+
+.theatrical-sticky-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  background: #FFFFFF;
+}
+
+/* Dynamic Interpolated Background Layer */
+.theatrical-bg-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-color: #FFFFFF;
+  will-change: background-color;
+  transition: background-color 0.12s linear;
+}
+
+.theatrical-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(ellipse 95% 75% at 50% 50%, transparent 55%, rgba(20, 24, 32, 0.05) 100%);
+  opacity: 0.8;
+}
+
+/* 3D Container Scene & Gyro Wrapper */
+.container-3d-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.container-gyro-wrapper {
+  position: relative;
+  width: min(940px, 92vw);
+  max-height: 82vh;
+  transform-style: preserve-3d;
+  will-change: transform;
+  pointer-events: auto;
+  transform: rotateY(calc(var(--scroll-rot-y, 0deg) + var(--gyro-x, 0) * 14deg)) rotateX(calc(var(--scroll-rot-x, 0deg) - var(--gyro-y, 0) * 10deg)) translate3d(0, var(--scroll-trans-y, 0px), 0);
+  transition: filter 0.4s ease;
+}
+
+.container-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 32px 64px rgba(20, 24, 32, 0.14));
+  overflow: visible;
+  will-change: filter, transform;
+}
+
+/* Crane Hoist Details */
+.crane-assembly {
+  will-change: transform;
+}
+
+#craneHookBlock {
+  will-change: transform;
+}
+
+#craneVerticalCable {
+  will-change: y2;
+}
+
+#craneSlingCables line {
+  will-change: y1;
+}
+
+.container-skin-orange {
+  transition: opacity 0.1s linear;
+  will-change: opacity;
+}
+
+/* ─── STAGE 1 HEADLINES (0% - 25% Scroll) ─── */
+.theatrical-headlines {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(24px, 4vw, 56px) clamp(24px, 5vw, 64px);
+  will-change: transform, opacity;
+}
+
+.stage1-top {
+  text-align: center;
+  margin-top: clamp(24px, 5vh, 60px);
+}
+
+.theatrical-eyebrow {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(12px, 1.4vw, 14px);
+  letter-spacing: .44em;
+  text-transform: uppercase;
+  color: var(--orange);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.display-title-ar {
+  font-family: 'El Messiri', serif;
+  font-size: clamp(48px, 9.5vw, 120px);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text);
+  letter-spacing: -.02em;
+}
+
+.display-sub-ar {
+  font-size: clamp(14px, 1.6vw, 18px);
+  color: var(--text-soft);
+  margin-top: 14px;
+  max-width: 54ch;
+  margin-inline: auto;
+  line-height: 1.8;
+}
+
+/* Display Watermarks (Apple-style architectural background typography) */
+.stage1-watermark {
+  position: absolute;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(64px, 13vw, 190px);
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: rgba(0, 0, 0, 0.035);
+  user-select: none;
+  pointer-events: none;
+  line-height: 1;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+}
+
+.stage1-wm-left {
+  top: 18%;
+  right: 4%;
+}
+
+.stage1-wm-right {
+  bottom: 12%;
+  left: 4%;
+}
+
+.stage1-badges {
+  display: flex;
+  justify-content: center;
+  gap: clamp(10px, 2vw, 20px);
+  flex-wrap: wrap;
+  margin-bottom: clamp(10px, 3vh, 32px);
+  z-index: 3;
+}
+
+.stage1-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px;
+  letter-spacing: .2em;
+  color: var(--text-soft);
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(12px);
+}
+
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 8px var(--orange);
+}
+
+/* ─── STAGE 2 THEATRICAL STATEMENT (25% - 65% Scroll) ─── */
+.theatrical-statement {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(24px, 6vw, 80px);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.statement-badge {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(14px);
+  padding: 7px 22px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  font-weight: 600;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+
+.statement-quote {
+  font-family: 'El Messiri', serif;
+  font-size: clamp(26px, 4.4vw, 54px);
+  font-weight: 700;
+  color: #FFFFFF;
+  max-width: 27ch;
+  line-height: 1.38;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.25);
+}
+
+.statement-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(12px, 1.4vw, 15px);
+  letter-spacing: .28em;
+  color: rgba(255, 255, 255, 0.92);
+  margin-top: 20px;
+  text-transform: uppercase;
+  max-width: 62ch;
+  line-height: 1.6;
+}
+
+.statement-metrics {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(24px, 5vw, 64px);
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+
+.s-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.s-val {
+  font-family: 'El Messiri', serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  color: #FFFFFF;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.2);
+}
+
+.s-lbl {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 500;
+}
+
+/* ─── STAGE 3 INSPECTION HOTSPOTS (65% - 100% Scroll) ─── */
+.theatrical-inspection {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.inspection-header {
+  position: absolute;
+  top: clamp(20px, 4vh, 50px);
+  right: 0;
+  left: 0;
+  text-align: center;
+}
+
+.inspection-header h3 {
+  font-family: 'El Messiri', serif;
+  font-size: clamp(24px, 3.2vw, 38px);
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 6px;
+}
+
+.hotspot-card {
+  position: absolute;
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(232, 91, 26, 0.3);
+  border-radius: 16px;
+  padding: 14px 18px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(232, 91, 26, 0.06);
+  backdrop-filter: blur(16px);
+  max-width: 270px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s, box-shadow 0.35s;
+}
+
+.hotspot-card:hover,
+.hotspot-card:focus-visible {
+  transform: translateY(-5px) scale(1.02);
+  border-color: var(--orange);
+  box-shadow: 0 24px 50px rgba(232, 91, 26, 0.2), 0 0 24px rgba(232, 91, 26, 0.15);
+}
+
+.hotspot-beacon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--orange-bright), var(--orange));
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+  box-shadow: 0 0 14px rgba(232, 91, 26, 0.5);
+}
+
+.beacon-ring {
+  position: absolute;
+  inset: -6px;
+  border: 2px solid var(--orange);
+  border-radius: 50%;
+  animation: beaconPulse 2.4s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+@keyframes beaconPulse {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+.hotspot-info h4 {
+  font-family: 'El Messiri', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.hotspot-info p {
+  font-size: 12px;
+  color: var(--text-soft);
+  margin-top: 4px;
+  line-height: 1.55;
+}
+
+.hotspot-link {
+  display: inline-block;
+  color: var(--orange);
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 6px;
+  transition: transform 0.2s ease;
+}
+
+.hotspot-card:hover .hotspot-link {
+  transform: translateX(-4px);
+}
+
+/* Hotspot Spatial Coordinates */
+.hotspot-security {
+  top: 48%;
+  right: clamp(16px, 5vw, 80px);
+}
+
+.hotspot-tracking {
+  top: 14%;
+  left: clamp(20px, 32vw, 42vw);
+}
+
+.hotspot-delivery {
+  bottom: 12%;
+  right: clamp(20px, 26vw, 36vw);
+}
+
+.hotspot-support {
+  top: 38%;
+  left: clamp(16px, 5vw, 80px);
+}
+
+/* ─── SCROLL CUE INDICATOR ─── */
+.theatrical-scroll-cue {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.theatrical-cue-track {
+  width: 2px;
+  height: 44px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+}
+
+.theatrical-cue-thumb {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, var(--orange), transparent);
+  transform-origin: top;
+  animation: scrollCuePass 2.2s ease-in-out infinite;
+}
+
+@keyframes scrollCuePass {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  50.1% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+.theatrical-cue-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px;
+  letter-spacing: .32em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+/* ─── TECHNICAL INSPECTION MODAL DIALOG ─── */
+.spec-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(14, 18, 24, 0.65);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.spec-modal-backdrop.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.spec-modal {
+  position: relative;
+  background: #FFFFFF;
+  border: 1px solid rgba(232, 91, 26, 0.25);
+  border-radius: 20px;
+  max-width: 640px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.25), 0 0 30px rgba(232, 91, 26, 0.12);
+  transform: translateY(30px) scale(0.96);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: clamp(24px, 4vw, 40px);
+}
+
+.spec-modal-backdrop.active .spec-modal {
+  transform: translateY(0) scale(1);
+}
+
+.spec-modal-close {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #F4F6F9;
+  color: var(--text);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.spec-modal-close:hover {
+  background: var(--orange);
+  color: #FFFFFF;
+  transform: rotate(90deg);
+}
+
+.spec-modal-header {
+  margin-bottom: 24px;
+}
+
+.spec-modal-badge {
+  display: inline-block;
+  background: rgba(232, 91, 26, 0.1);
+  border: 1px solid rgba(232, 91, 26, 0.25);
+  color: var(--orange);
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.spec-modal-header h3 {
+  font-family: 'El Messiri', serif;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.spec-modal-header p {
+  color: var(--text-soft);
+  font-size: 14px;
+  margin-top: 6px;
+  line-height: 1.6;
+}
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin: 22px 0;
+}
+
+.spec-item {
+  background: #F9FAFC;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.spec-item-label {
+  font-size: 11px;
+  color: var(--text-faint);
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.spec-item-val {
+  font-family: 'Tajawal', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 4px;
+}
+
+.spec-features-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.spec-features-list li {
+  position: relative;
+  padding-right: 22px;
+  font-size: 14px;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.spec-features-list li::before {
+  content: "✔";
+  position: absolute;
+  right: 0;
+  color: var(--orange);
+  font-size: 12px;
+}
+
+/* Responsive Breakpoints for Theatrical Stage */
+@media (max-width: 992px) {
+  .stage1-watermark {
+    display: none;
+  }
+  .hotspot-card {
+    max-width: 220px;
+    padding: 12px 14px;
+  }
+  .hotspot-security {
+    top: 52%;
+    right: 14px;
+  }
+  .hotspot-support {
+    top: 36%;
+    left: 14px;
+  }
+  .hotspot-tracking {
+    top: 10%;
+    left: 20%;
+  }
+  .hotspot-delivery {
+    bottom: 8%;
+    right: 18%;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-scroll-stage {
+    height: 380vh;
+  }
+  .container-gyro-wrapper {
+    width: 95vw;
+  }
+  .statement-quote {
+    font-size: 22px;
+  }
+  .hotspot-card {
+    position: static;
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+  .theatrical-inspection {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 16px;
+  }
+  .inspection-header {
+    position: static;
+    margin-bottom: 12px;
+  }
+  .spec-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

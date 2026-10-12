@@ -106,9 +106,9 @@
         }, "+=0.06");
 
         // 3. Staggered Hero entrance as stripes open
-        exitTl.fromTo("#hero .hero-inner", 
-          { opacity: 0, y: 32 }, 
-          { opacity: 1, y: 0, duration: 1.05, ease: "power3.out" },
+        exitTl.fromTo(["#stage1Headlines", "#containerScene"], 
+          { opacity: 0, y: 36 }, 
+          { opacity: 1, y: 0, duration: 1.1, ease: "power3.out", stagger: 0.12 },
           "-=0.55"
         );
       } else {
@@ -121,9 +121,9 @@
           preloader.classList.add("loaded");
           if (hasGSAP) {
             ScrollTrigger.refresh();
-            gsap.fromTo("#hero .hero-inner", 
+            gsap.fromTo(["#stage1Headlines", "#containerScene"], 
               { opacity: 0, y: 35 }, 
-              { opacity: 1, y: 0, duration: 1.1, ease: "power3.out", delay: 0.2 }
+              { opacity: 1, y: 0, duration: 1.1, ease: "power3.out", delay: 0.2, stagger: 0.1 }
             );
           }
           setTimeout(() => {
@@ -174,45 +174,6 @@
     reveals.forEach(el => el.classList.add("in"));
   }
 
-  /* ─── THREE.JS HERO PARTICLES ─── */
-  if (hasThree && !reduce) {
-    (function () {
-      const canvas = document.getElementById("heroCanvas");
-      if (!canvas) return;
-      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setClearColor(0x000000, 0);
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(70, 1, 0.1, 100);
-      camera.position.z = 3;
-      function resize() { const w = canvas.clientWidth, h = canvas.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
-      resize();
-      window.addEventListener("resize", resize, { passive: true });
-      const N = 1800;
-      const pos = new Float32Array(N * 3), col = new Float32Array(N * 3), sz = new Float32Array(N);
-      for (let i = 0; i < N; i++) {
-        const r = 2.8 + Math.random() * 2.5;
-        const theta = Math.random() * Math.PI * 2;
-        const phi = Math.acos(2 * Math.random() - 1);
-        pos[i*3]=r*Math.sin(phi)*Math.cos(theta); pos[i*3+1]=r*Math.sin(phi)*Math.sin(theta); pos[i*3+2]=r*Math.cos(phi)-1;
-        const t = Math.random(); col[i*3]=0.85+t*.15; col[i*3+1]=0.2+t*.25; col[i*3+2]=0.05;
-        sz[i] = Math.random()*2.5+0.8;
-      }
-      const geo = new THREE.BufferGeometry();
-      geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-      geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
-      const mat = new THREE.PointsMaterial({ size: 0.024, vertexColors: true, transparent: true, opacity: 0.65, sizeAttenuation: true, depthWrite: false, blending: THREE.NormalBlending });
-      const particles = new THREE.Points(geo, mat);
-      scene.add(particles);
-      let mx = 0, my = 0;
-      document.addEventListener("mousemove", e => { mx = (e.clientX / window.innerWidth - 0.5) * 0.5; my = (e.clientY / window.innerHeight - 0.5) * 0.5; }, { passive: true });
-      let raf;
-      function animate(t) { raf = requestAnimationFrame(animate); particles.rotation.y = t * 0.00008 + mx * 0.3; particles.rotation.x = t * 0.00004 + my * 0.2; renderer.render(scene, camera); }
-      animate(0);
-      document.addEventListener("visibilitychange", () => { if (document.hidden) cancelAnimationFrame(raf); else animate(performance.now()); });
-    })();
-  }
-
   /* ─── THREE.JS WHY 3D SCENE ─── */
   if (hasThree && !reduce) {
     (function () {
@@ -257,46 +218,296 @@
     })();
   }
 
-  /* ─── HERO ENTRANCE ─── */
-  if (hasGSAP && !reduce) {
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.fromTo("#heroLogoImg",  { opacity:0, scale:.75, y:50 }, { opacity:1, scale:1, y:0, duration:1.6 }, 0.2)
-      .fromTo(".hero-eyebrow", { opacity:0, y:18 }, { opacity:1, y:0, duration:.9 }, 0.6)
-      .fromTo("#hero h1",      { opacity:0, y:30, clipPath:"inset(0 0 100% 0)" }, { opacity:1, y:0, clipPath:"inset(0 0 0% 0)", duration:1.2 }, 0.85)
-      .fromTo(".hero-tagline", { opacity:0, y:14 }, { opacity:1, y:0, duration:.9 }, 1.2)
-      .fromTo(".scrollcue",    { opacity:0 }, { opacity:1, duration:.8 }, 1.55)
-      .fromTo(".hero-stat",    { opacity:0, y:20 }, { opacity:1, y:0, duration:.7, stagger:.12 }, 1.3);
+  /* ═══════════════════════════════════════════════════════════
+     THEATRICAL 320VH SCROLL STAGE & 3D ISOMETRIC SVG CONTAINER
+     Apple-grade continuous scroll choreography with crane hoist,
+     3D perspective yaw/pitch, dynamic color morph & inspection mode
+     ═══════════════════════════════════════════════════════════ */
+  function initTheatricalScrollHero() {
+    const stage = document.getElementById("hero");
+    const stickyStage = document.getElementById("theatricalStage");
+    if (!stage || !stickyStage) return;
 
-    gsap.to("#heroInner", { scrollTrigger: { trigger: "#hero", start: "top top", end: "80% top", scrub: true }, y: -60, opacity: 0, ease: "none" });
-    gsap.to(".hero-stats", { scrollTrigger: { trigger: "#hero", start: "60% top", end: "90% top", scrub: true }, opacity: 0, y: 20, ease: "none" });
+    const bgLayer = document.getElementById("theatricalBg");
+    const containerGyro = document.getElementById("containerGyro");
+    const stage1Headlines = document.getElementById("stage1Headlines");
+    const stage2Statement = document.getElementById("stage2Statement");
+    const stage3Inspection = document.getElementById("stage3Inspection");
+    const scrollCue = document.getElementById("theatricalScrollCue");
 
-    /* Pointer tilt */
-    const heroStage = document.getElementById("heroStage");
-    const heroTilt  = document.getElementById("heroLogoTilt");
-    const heroAura  = document.getElementById("heroAura");
-    const heroMotes = document.querySelector(".hero-motes");
-    if (heroStage && heroTilt) {
-      heroStage.addEventListener("pointermove", e => {
-        const r = heroStage.getBoundingClientRect();
-        const nx = (e.clientX - r.left) / r.width - 0.5;
-        const ny = (e.clientY - r.top) / r.height - 0.5;
-        heroTilt.style.setProperty("--ty", (nx*14).toFixed(2)+"deg");
-        heroTilt.style.setProperty("--tx", (-ny*10).toFixed(2)+"deg");
-        heroAura.style.setProperty("--px", (-nx*52).toFixed(1)+"px");
-        heroAura.style.setProperty("--py", (-ny*38).toFixed(1)+"px");
-        if(heroMotes) heroMotes.style.transform = `translate3d(${(nx*25).toFixed(1)}px,${(ny*18).toFixed(1)}px,0)`;
-      }, { passive:true });
-      heroStage.addEventListener("pointerleave", () => {
-        heroTilt.style.setProperty("--ty","0deg"); heroTilt.style.setProperty("--tx","0deg");
-        heroAura.style.setProperty("--px","0px"); heroAura.style.setProperty("--py","0px");
-        if(heroMotes) heroMotes.style.transform = "translate3d(0,0,0)";
-      }, { passive:true });
+    // SVG animated elements
+    const orangeSkin = document.getElementById("containerFaceGroupOrange");
+    const hookBlock = document.getElementById("craneHookBlock");
+    const verticalCable = document.getElementById("craneVerticalCable");
+    const sling1 = document.getElementById("slingCable1");
+    const sling2 = document.getElementById("slingCable2");
+    const sling3 = document.getElementById("slingCable3");
+    const sling4 = document.getElementById("slingCable4");
+
+    // Master ScrollTrigger Timeline across the 320vh height
+    if (hasGSAP && !reduce) {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: stage,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1.2
+        }
+      });
+
+      // ── STAGE 1 -> STAGE 2 (0.0 to 0.50):
+      // Headlines lift & fade
+      tl.to(stage1Headlines, { opacity: 0, y: -45, duration: 0.28 }, 0)
+        // Background color blend to vermilion brand orange (#E85B1A)
+        .to(bgLayer, { backgroundColor: "#E85B1A", duration: 0.32 }, 0.15)
+        // Container morph to vibrant vermilion orange
+        .to(orangeSkin, { opacity: 1, duration: 0.28 }, 0.18)
+
+        // Crane Hoist descends: hook lowers from 55 to 110
+        .to(hookBlock, {
+          y: 55,
+          duration: 0.42,
+          ease: "none",
+          onUpdate: function () {
+            const curY = 55 + (hookBlock._gsap ? hookBlock._gsap.y : 0);
+            if (verticalCable) verticalCable.setAttribute("y2", curY);
+            const apexY = curY + 24;
+            if (sling1) sling1.setAttribute("y1", apexY);
+            if (sling2) sling2.setAttribute("y1", apexY);
+            if (sling3) sling3.setAttribute("y1", apexY);
+            if (sling4) sling4.setAttribute("y1", apexY);
+          }
+        }, 0.1)
+
+        // 3D Perspective Rotation (Yaw & Pitch)
+        .to(containerGyro, {
+          "--scroll-rot-y": "16deg",
+          "--scroll-rot-x": "-5deg",
+          "--scroll-trans-y": "30px",
+          duration: 0.35,
+          ease: "power1.inOut"
+        }, 0.1)
+
+        // Stage 2 Statement enters
+        .fromTo(stage2Statement, 
+          { opacity: 0, scale: 0.92, y: 35 }, 
+          { opacity: 1, scale: 1, y: 0, duration: 0.22 }, 
+          0.26
+        )
+        // Statement holds in focus
+        .to(stage2Statement, { opacity: 1, duration: 0.22 }, 0.48)
+        // Statement lifts & fades out
+        .to(stage2Statement, { opacity: 0, scale: 1.05, y: -30, duration: 0.18 }, 0.70)
+
+        // ── STAGE 2 -> STAGE 3 (0.50 to 1.0):
+        // Background blends into soft inspection bay neutral
+        .to(bgLayer, { backgroundColor: "#F8F9FA", duration: 0.24 }, 0.68)
+        // Container returns to crisp inspection mode
+        .to(orangeSkin, { opacity: 0.15, duration: 0.24 }, 0.70)
+        // 3D Perspective centers for inspection
+        .to(containerGyro, {
+          "--scroll-rot-y": "-10deg",
+          "--scroll-rot-x": "4deg",
+          duration: 0.25,
+          ease: "power1.inOut"
+        }, 0.45)
+        .to(containerGyro, {
+          "--scroll-rot-y": "0deg",
+          "--scroll-rot-x": "0deg",
+          "--scroll-trans-y": "15px",
+          duration: 0.24,
+          ease: "power1.out"
+        }, 0.72)
+
+        // Crane hoist re-stabilizes
+        .to(hookBlock, {
+          y: 20,
+          duration: 0.24,
+          onUpdate: function () {
+            const curY = 55 + (hookBlock._gsap ? hookBlock._gsap.y : 0);
+            if (verticalCable) verticalCable.setAttribute("y2", curY);
+            const apexY = curY + 24;
+            if (sling1) sling1.setAttribute("y1", apexY);
+            if (sling2) sling2.setAttribute("y1", apexY);
+            if (sling3) sling3.setAttribute("y1", apexY);
+            if (sling4) sling4.setAttribute("y1", apexY);
+          }
+        }, 0.74)
+
+        // Inspection Hotspots enter
+        .fromTo(stage3Inspection,
+          { opacity: 0, scale: 0.95 },
+          { opacity: 1, scale: 1, duration: 0.22 },
+          0.76
+        )
+        // Scroll cue fades out
+        .to(scrollCue, { opacity: 0, duration: 0.1 }, 0.85);
     }
-  } else {
-    document.querySelectorAll(".hero-eyebrow,#heroLogoImg,#hero h1,.hero-tagline,.scrollcue,.hero-stat").forEach(el => {
-      el.style.opacity = "1"; el.style.clipPath = "none"; el.style.transform = "none";
+
+    // ── Interactive Mouse Gyro Tilt Loop ──
+    let targetGyroX = 0, targetGyroY = 0;
+    let currentGyroX = 0, currentGyroY = 0;
+    let gyroRaf = null;
+
+    stickyStage.addEventListener("pointermove", e => {
+      const rect = stickyStage.getBoundingClientRect();
+      targetGyroX = (e.clientX - rect.left) / rect.width - 0.5;
+      targetGyroY = (e.clientY - rect.top) / rect.height - 0.5;
+    }, { passive: true });
+
+    stickyStage.addEventListener("pointerleave", () => {
+      targetGyroX = 0;
+      targetGyroY = 0;
+    }, { passive: true });
+
+    function gyroLoop() {
+      gyroRaf = requestAnimationFrame(gyroLoop);
+      currentGyroX += (targetGyroX - currentGyroX) * 0.08;
+      currentGyroY += (targetGyroY - currentGyroY) * 0.08;
+      stickyStage.style.setProperty("--gyro-x", currentGyroX.toFixed(4));
+      stickyStage.style.setProperty("--gyro-y", currentGyroY.toFixed(4));
+    }
+    gyroLoop();
+
+    // ── Inspection Modal Dialog Logic ──
+    const modalBackdrop = document.getElementById("specModalBackdrop");
+    const modalBody = document.getElementById("specModalBody");
+    const modalClose = document.getElementById("specModalClose");
+
+    const specData = {
+      security: {
+        badge: "ISO 1496-1 / CSC CERTIFIED",
+        title: "أنظمة الأمان والإغلاق المحكم (ISO 1496)",
+        desc: "أبواب فولاذية مزدوجة مصممة لتحمل أعتى ظروف النقل البري والبحري، مزودة بـ 4 قضبان قفل من فولاذ الكورتن المعالج.",
+        specs: [
+          { label: "مادة الصنع", val: "Corten-A Weathering Steel" },
+          { label: "قوة الشد للأقفال", val: "520 N/mm² Tensile Strength" },
+          { label: "الأختام الجمركية", val: "ISO 17712 High Security Seal" },
+          { label: "حشية الإحكام", val: "EPDM Double Lip (-40°C to +80°C)" }
+        ],
+        features: [
+          "أقفال مزدوجة مقاومة للقص ومحمية بصناديق قفل فولاذية (Lock Boxes).",
+          "توافق كامل مع متطلبات التفتيش الجمركي الذكي وإجراءات الفحص بالأشعة.",
+          "عزل كلي ضد تسرب المياه والرطوبة والأتربة الصحراوية بفضل حشيات EPDM.",
+          "شهادة اعتماد CSC الدولية لاختبارات الضغط والتكديس حتى 9 حاويات."
+        ]
+      },
+      tracking: {
+        badge: "SATELLITE IoT & TELEMATICS",
+        title: "منظومة التتبع الفضائي الذكي (IoT Smart Sensor)",
+        desc: "وحدة تتبع ذكية مثبتة أعلى الحاوية متصلة بالأقمار الصناعية وشبكات 4G/5G لتزويد غرفة العمليات ببيانات لحظية.",
+        specs: [
+          { label: "نظام تحديد المواقع", val: "Dual GPS & GLONASS Constellation" },
+          { label: "دقة التتبع", val: "أقل من 2.5 متر على مدار 24 ساعة" },
+          { label: "حساسات البيئة", val: "مراقبة الحرارة والرطوبة الداخلية" },
+          { label: "حساس الصدمات", val: "3-Axis Accelerometer (> 2.5G Impact)" }
+        ],
+        features: [
+          "تنبيهات فورية عند فتح الأبواب أو تجاوز السياج الجغرافي المحدد للمسار (Geofencing).",
+          "سجل بيئي موثق لدرجات الحرارة ونسبة الرطوبة للشحنات الحساسة.",
+          "بطارية احتياطية طويلة الأجل مدعومة بتقنية الاستشعار الشمسي منخفض الطاقة.",
+          "تكامل رقمي مباشر مع بوابة العميل لمتابعة الشحنة دقيقة بدقيقة."
+        ]
+      },
+      delivery: {
+        badge: "EXPEDITE CORRIDORS & PORT CLEARANCE",
+        title: "التزام فائق بالمواعيد والربط اللوجستي السريع",
+        desc: "شبكة نقل متطورة تغطي كافة موانئ ومنافذ المملكة مع تنسيق جمركي استباقي يضمن تفريغ وتسليم الشحنات في وقت قياسي.",
+        specs: [
+          { label: "معدل الالتزام بالمواعيد", val: "99.4% On-time Delivery Index" },
+          { label: "الربط الجمركي", val: "تكامل مباشر مع منصة فسح (FASAH)" },
+          { label: "أسطول النقل", val: "شاحنات حديثة بنظام التعليق الهوائي" },
+          { label: "زمن الاستجابة للموانئ", val: "أقل من 3 ساعات من لحظة الإذن" }
+        ],
+        features: [
+          "مسارات نقل سريعة مخصصة تربط ميناء جدة الإسلامي وميناء الملك عبدالعزيز بالرياض.",
+          "تخليص جمركي فوري واستباقي يقلل فترات المكوث في ساحات الحاويات.",
+          "شاحنات مجهزة بأنظمة تعليق متطورة لحماية البضائع من اهتزازات الطرق السريعة.",
+          "إشعارات وصول تلقائية مع إثبات التسليم الإلكتروني (e-POD)."
+        ]
+      },
+      support: {
+        badge: "24/7 LOGISTICS OPERATIONS CENTER",
+        title: "غرفة عمليات وإشراف لوجستي على مدار الساعة",
+        desc: "فريق عمليات متخصص يعمل على مدار 24 ساعة طوال أيام الأسبوع لتقديم الدعم الفني، إدارة الأزمات، والتنسيق الميداني.",
+        specs: [
+          { label: "ساعات العمل", val: "24 ساعة / 7 أيام بدون انقطاع" },
+          { label: "زمن الاستجابة للبلاغات", val: "أقل من 8 دقائق" },
+          { label: "التغطية التأمينية", val: "تأمين شامل على البضائع المنقولة" },
+          { label: "قنوات التواصل", val: "بوابة رقمية · اتصال مباشر · واتساب موثق" }
+        ],
+        features: [
+          "إشراف مباشر على حركة السائقين ومراقبة فترات الراحة والسلامة المرورية.",
+          "إدارة مخصصة لتصاريح النقل الثقيل ونقل المعدات النفطية والإنشائية.",
+          "فريق تدخل سريع لحالات الطوارئ والأعطال الميدانية على الطرق السريعة.",
+          "تقارير أداء دورية وتحليلات لوجستية مخصصة للعملاء والمشاريع الكبرى."
+        ]
+      }
+    };
+
+    function openModal(type) {
+      const data = specData[type];
+      if (!data || !modalBackdrop || !modalBody) return;
+
+      modalBody.innerHTML = `
+        <div class="spec-modal-header">
+          <span class="spec-modal-badge">${data.badge}</span>
+          <h3 id="modalTitle">${data.title}</h3>
+          <p>${data.desc}</p>
+        </div>
+        <div class="spec-grid">
+          ${data.specs.map(s => `
+            <div class="spec-item">
+              <div class="spec-item-label">${s.label}</div>
+              <div class="spec-item-val">${s.val}</div>
+            </div>
+          `).join("")}
+        </div>
+        <ul class="spec-features-list">
+          ${data.features.map(f => `<li>${f}</li>`).join("")}
+        </ul>
+      `;
+
+      modalBackdrop.classList.add("active");
+      modalBackdrop.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      if (!modalBackdrop) return;
+      modalBackdrop.classList.remove("active");
+      modalBackdrop.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    document.querySelectorAll(".hotspot-card[data-hotspot]").forEach(card => {
+      card.addEventListener("click", () => {
+        openModal(card.getAttribute("data-hotspot"));
+      });
+      card.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openModal(card.getAttribute("data-hotspot"));
+        }
+      });
+    });
+
+    if (modalClose) modalClose.addEventListener("click", closeModal);
+    if (modalBackdrop) {
+      modalBackdrop.addEventListener("click", e => {
+        if (e.target === modalBackdrop) closeModal();
+      });
+    }
+
+    window.addEventListener("keydown", e => {
+      if (e.key === "Escape" && modalBackdrop && modalBackdrop.classList.contains("active")) {
+        closeModal();
+      }
     });
   }
+
+  // Initialize Theatrical Hero
+  initTheatricalScrollHero();
 
   /* ─── COUNTERS ─── */
   document.querySelectorAll(".stat-item").forEach(item => {
