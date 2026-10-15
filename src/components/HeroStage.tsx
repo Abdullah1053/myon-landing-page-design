@@ -221,7 +221,6 @@ export const HeroStage: React.FC<HeroStageProps> = ({ onOpenHotspot }) => {
         {/* Stage 1 Headlines (0% - 25% Scroll) */}
         <div className="theatrical-headlines" ref={stage1HeadlinesRef} id="stage1Headlines">
           <div className="stage1-top">
-            <span className="theatrical-eyebrow">شركة ميون للمقاولات والخدمات اللوجستية</span>
             <h1 className="display-title-ar">
               دقة <span className="orange-word">وإنجاز</span>
             </h1>
@@ -238,19 +237,26 @@ export const HeroStage: React.FC<HeroStageProps> = ({ onOpenHotspot }) => {
             DELIVERY
           </div>
 
-          {/* Trust Badges */}
-          <div className="stage1-badges">
-            <div className="stage1-badge">
-              <span className="badge-dot"></span>
-              <span>ISO 9001 / 14001 CERTIFIED</span>
+          {/* Stage 1 Bottom (Under the 3D Container) */}
+          <div className="stage1-bottom">
+            <div className="theatrical-eyebrow">
+              شركة ميون للمقاولات والخدمات اللوجستية
             </div>
-            <div className="stage1-badge">
-              <span className="badge-dot"></span>
-              <span>24/7 SATELLITE FLEET MONITORING</span>
-            </div>
-            <div className="stage1-badge">
-              <span className="badge-dot"></span>
-              <span>KSA &amp; REGIONAL LOGISTICS</span>
+
+            {/* Trust Badges */}
+            <div className="stage1-badges">
+              <div className="stage1-badge">
+                <span className="badge-dot"></span>
+                <span>ISO 9001 / 14001 CERTIFIED</span>
+              </div>
+              <div className="stage1-badge">
+                <span className="badge-dot"></span>
+                <span>24/7 SATELLITE FLEET MONITORING</span>
+              </div>
+              <div className="stage1-badge">
+                <span className="badge-dot"></span>
+                <span>KSA &amp; REGIONAL LOGISTICS</span>
+              </div>
             </div>
           </div>
         </div>

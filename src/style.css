@@ -1376,15 +1376,37 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--orange);outline-off
   margin-top: clamp(24px, 5vh, 60px);
 }
 
+.stage1-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: clamp(10px, 2.5vh, 28px);
+  z-index: 3;
+  gap: clamp(8px, 1.4vh, 14px);
+  pointer-events: auto;
+}
+
 .theatrical-eyebrow {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(12px, 1.4vw, 14px);
-  letter-spacing: .44em;
-  text-transform: uppercase;
+  font-family: 'El Messiri', 'Tajawal', serif;
+  font-size: clamp(20px, 2.6vw, 32px);
+  font-weight: 700;
+  line-height: 1.35;
   color: var(--orange);
-  font-weight: 600;
-  display: block;
-  margin-bottom: 8px;
+  background: linear-gradient(135deg, #FF7A33 0%, #E85B1A 50%, #C74A10 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  letter-spacing: normal;
+  text-align: center;
+  filter: drop-shadow(0 2px 12px rgba(232, 91, 26, 0.16));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.theatrical-eyebrow:hover {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 4px 16px rgba(232, 91, 26, 0.28));
 }
 
 .display-title-ar {
@@ -1435,7 +1457,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--orange);outline-off
   justify-content: center;
   gap: clamp(10px, 2vw, 20px);
   flex-wrap: wrap;
-  margin-bottom: clamp(10px, 3vh, 32px);
+  margin-bottom: 0;
   z-index: 3;
 }
 
@@ -1926,9 +1948,16 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--orange);outline-off
     margin-top: 8px;
     max-width: 36ch;
   }
+  .stage1-bottom {
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .theatrical-eyebrow {
+    font-size: clamp(16px, 4.8vw, 22px);
+  }
   .stage1-badges {
     gap: 6px;
-    margin-bottom: 12px;
+    margin-bottom: 4px;
   }
   .stage1-badge {
     font-size: 10px;
