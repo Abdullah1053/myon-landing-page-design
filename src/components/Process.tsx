@@ -14,11 +14,15 @@ export const Process: React.FC = () => {
     const fillEl = fillLineRef.current;
     if (!container || !fillEl) return;
 
+    const isTouch =
+      typeof window !== 'undefined' &&
+      (window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window || window.innerWidth <= 768);
+
     const st = ScrollTrigger.create({
       trigger: container,
       start: 'top 75%',
       end: 'bottom 45%',
-      scrub: 0.5,
+      scrub: isTouch ? 1.0 : 0.6,
       onUpdate: (self) => {
         fillEl.style.height = `${(self.progress * 100).toFixed(1)}%`;
         const stepIndex = Math.min(Math.floor(self.progress * 4) + 1, 4);

@@ -31,17 +31,19 @@ export const App: React.FC = () => {
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isTouch = window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
+    const isMobileWidth = typeof window !== 'undefined' && window.innerWidth <= 768;
+    const isPhoneTouch = isTouch || isMobileWidth;
     const progressEl = document.getElementById('progress');
 
-    // Lenis Smooth Scroll configured for responsive trackpad and touch
+    // Lenis Smooth Scroll configured with firmer touch resistance and controlled damping on phones
     if (!reduceMotion) {
       const lenis = new Lenis({
-        duration: isTouch ? 0.85 : 1.1,
+        duration: isPhoneTouch ? 1.25 : 1.1,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         orientation: 'vertical',
         gestureOrientation: 'vertical',
         smoothWheel: true,
-        touchMultiplier: 1.15,
+        touchMultiplier: isPhoneTouch ? 0.6 : 1.0, // Substantially firmer touch scrolling resistance on phones
         wheelMultiplier: 0.95,
       });
       lenisRef.current = lenis;

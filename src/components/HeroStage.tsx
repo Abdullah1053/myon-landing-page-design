@@ -44,7 +44,7 @@ export const HeroStage: React.FC<HeroStageProps> = ({ onOpenHotspot }) => {
 
     const isTouch =
       typeof window !== 'undefined' &&
-      (window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window);
+      (window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window || window.innerWidth <= 768);
 
     // Crane Hoist Rigging Updater without DOM readback
     const updateCrane = (yVal: number) => {
@@ -69,12 +69,13 @@ export const HeroStage: React.FC<HeroStageProps> = ({ onOpenHotspot }) => {
     };
 
     // Master ScrollTrigger Timeline across the scroll stage
+    // Generous scrub on mobile (1.4s) provides firm, weighted damping so the animation moves deliberately rather than rushing
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: stage,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: isTouch ? 0.45 : 0.7,
+        scrub: isTouch ? 1.4 : 0.8,
         fastScrollEnd: true,
         preventOverlaps: true,
       },

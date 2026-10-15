@@ -1875,6 +1875,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--orange);outline-off
 
 /* Responsive Breakpoints for Theatrical Stage */
 @media (max-width: 992px) {
+  .hero-scroll-stage {
+    height: 310vh;
+  }
   .stage1-watermark {
     display: none;
   }
@@ -1902,7 +1905,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--orange);outline-off
 
 @media (max-width: 640px) {
   .hero-scroll-stage {
-    height: 240vh;
+    height: 340vh; /* Expands scroll runway on phone view so the 3D container animation unfolds gradually with firm resistance */
   }
   .theatrical-sticky-stage {
     perspective: 900px;
