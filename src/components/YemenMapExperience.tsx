@@ -191,18 +191,18 @@ export const YemenMapExperience: React.FC = () => {
 
     mapGroup.add(pedestalGroup);
 
-    // Default Lighter Architectural Materials
+    // Default Warm Light Orange Materials (Replacing pale grey)
     const govMatFront = new THREE.MeshStandardMaterial({
-      color: 0xEEF2F6,
-      roughness: 0.38,
-      metalness: 0.18,
-      emissive: 0xCAD5E2,
-      emissiveIntensity: 0.08,
+      color: 0xFFA26B,
+      roughness: 0.32,
+      metalness: 0.15,
+      emissive: 0xE85B1A,
+      emissiveIntensity: 0.18,
     });
     const govMatSide = new THREE.MeshStandardMaterial({
-      color: 0xC5CED9,
-      roughness: 0.46,
-      metalness: 0.28,
+      color: 0xD96628,
+      roughness: 0.38,
+      metalness: 0.22,
     });
 
     const extrudeSettings = {
@@ -255,7 +255,7 @@ export const YemenMapExperience: React.FC = () => {
         };
 
         const edgesGeom = new THREE.EdgesGeometry(geom, 30);
-        const lineMat = new THREE.LineBasicMaterial({ color: 0x94A3B8, transparent: true, opacity: 0.45 });
+        const lineMat = new THREE.LineBasicMaterial({ color: 0xC24A0E, transparent: true, opacity: 0.6 });
         const lineSeg = new THREE.LineSegments(edgesGeom, lineMat);
         mesh.add(lineSeg);
 
@@ -332,7 +332,7 @@ export const YemenMapExperience: React.FC = () => {
 
     markerObjectsRef.current = markerObjects;
 
-    // Master Styles Updater for Default (Lighter), Hover, and Pressed Location States
+    // Master Styles Updater for Default (Light Orange), Distinct Golden Hover, and Primary Orange Pressed State
     const updateStyles = (selectedGovId: string | null, hoveredGovId: string | null) => {
       const selectedProjId = selectedProjectIdRef.current;
 
@@ -348,48 +348,48 @@ export const YemenMapExperience: React.FC = () => {
           const sideMat = (m as any).userData?.sideMat as THREE.MeshStandardMaterial;
 
           if (isPressed) {
-            // PRESSED LOCATION: Rich, vibrant signature Myon Orange with slight 3D elevation
+            // PRESSED LOCATION: Iconic Primary Myon Orange with prominent 3D extrusion
             if (frontMat) {
-              frontMat.color.setHex(0xE85B1A);
+              frontMat.color.setHex(0xE85B1A); // Website Primary Orange
               frontMat.emissive.setHex(0xC74A10);
-              frontMat.emissiveIntensity = 0.65;
-              frontMat.roughness = 0.22;
-              frontMat.metalness = 0.25;
-            }
-            if (sideMat) {
-              sideMat.color.setHex(0xA83B0A);
-              sideMat.roughness = 0.3;
-              sideMat.metalness = 0.42;
-            }
-            m.position.z = 0.10;
-          } else if (isHovered) {
-            // HOVERING LOCATION: Luminous warm soft amber/peach highlight
-            if (frontMat) {
-              frontMat.color.setHex(0xFFC094);
-              frontMat.emissive.setHex(0xE85B1A);
-              frontMat.emissiveIntensity = 0.40;
-              frontMat.roughness = 0.28;
+              frontMat.emissiveIntensity = 0.75;
+              frontMat.roughness = 0.18;
               frontMat.metalness = 0.22;
             }
             if (sideMat) {
-              sideMat.color.setHex(0xDB7338);
-              sideMat.roughness = 0.36;
-              sideMat.metalness = 0.32;
+              sideMat.color.setHex(0x9A3406); // Deep warm amber-orange
+              sideMat.roughness = 0.28;
+              sideMat.metalness = 0.40;
             }
-            m.position.z = 0.05;
-          } else {
-            // DEFAULT COLOR: Lighter, clean modern architectural tone
+            m.position.z = 0.14;
+          } else if (isHovered) {
+            // HOVERING SELECTION: Distinct luminous radiant golden-sunburst amber
             if (frontMat) {
-              frontMat.color.setHex(0xEEF2F6);
-              frontMat.emissive.setHex(0xCAD5E2);
-              frontMat.emissiveIntensity = 0.08;
-              frontMat.roughness = 0.38;
+              frontMat.color.setHex(0xFFD034); // Glowing golden sunburst (clearly differs from orange)
+              frontMat.emissive.setHex(0xFFAA00);
+              frontMat.emissiveIntensity = 0.62;
+              frontMat.roughness = 0.22;
               frontMat.metalness = 0.18;
             }
             if (sideMat) {
-              sideMat.color.setHex(0xC5CED9);
-              sideMat.roughness = 0.46;
-              sideMat.metalness = 0.28;
+              sideMat.color.setHex(0xE59800); // Warm gold bevel & sides
+              sideMat.roughness = 0.32;
+              sideMat.metalness = 0.25;
+            }
+            m.position.z = 0.08;
+          } else {
+            // DEFAULT COLOR: Rich, warm Light Orange (no longer pale!)
+            if (frontMat) {
+              frontMat.color.setHex(0xFFA26B); // Warm Light Orange
+              frontMat.emissive.setHex(0xE85B1A);
+              frontMat.emissiveIntensity = 0.18;
+              frontMat.roughness = 0.32;
+              frontMat.metalness = 0.15;
+            }
+            if (sideMat) {
+              sideMat.color.setHex(0xD96628); // Terracotta orange sides
+              sideMat.roughness = 0.38;
+              sideMat.metalness = 0.22;
             }
             m.position.z = 0;
           }
@@ -399,14 +399,14 @@ export const YemenMapExperience: React.FC = () => {
           const lineMat = l.material as THREE.LineBasicMaterial;
           if (lineMat) {
             if (isPressed) {
-              lineMat.color.setHex(0xFFFFFF); // Brilliant white illuminated boundary
+              lineMat.color.setHex(0xFFFFFF); // Brilliant illuminated white boundary
               lineMat.opacity = 1.0;
             } else if (isHovered) {
-              lineMat.color.setHex(0xFF6B2B); // High-contrast orange hover edge
-              lineMat.opacity = 0.95;
+              lineMat.color.setHex(0xFFFFFF); // High-contrast white-gold neon hover outline
+              lineMat.opacity = 1.0;
             } else {
-              lineMat.color.setHex(0x94A3B8); // Subtle, refined light slate border
-              lineMat.opacity = 0.45;
+              lineMat.color.setHex(0xC24A0E); // Deep crisp orange borders on light orange
+              lineMat.opacity = 0.60;
             }
           }
         });
@@ -420,25 +420,25 @@ export const YemenMapExperience: React.FC = () => {
 
         const mat = m.beacon.material as THREE.MeshStandardMaterial;
         if (isBeaconPressed) {
-          m.beacon.scale.set(1.45, 1.45, 1.45);
+          m.beacon.scale.set(1.5, 1.5, 1.5);
           if (mat) {
             mat.color.setHex(0xFFFFFF);
             mat.emissive.setHex(0xE85B1A);
-            mat.emissiveIntensity = 1.8;
+            mat.emissiveIntensity = 1.9;
           }
         } else if (isBeaconHovered) {
-          m.beacon.scale.set(1.22, 1.22, 1.22);
+          m.beacon.scale.set(1.35, 1.35, 1.35);
           if (mat) {
-            mat.color.setHex(0xFFA366);
-            mat.emissive.setHex(0xE85B1A);
-            mat.emissiveIntensity = 1.35;
+            mat.color.setHex(0xFFD034); // Match radiant golden hover
+            mat.emissive.setHex(0xFFAA00);
+            mat.emissiveIntensity = 1.6;
           }
         } else {
           m.beacon.scale.set(1.0, 1.0, 1.0);
           if (mat) {
             mat.color.setHex(0xFF7A3D);
             mat.emissive.setHex(0xE85B1A);
-            mat.emissiveIntensity = 0.85;
+            mat.emissiveIntensity = 0.9;
           }
         }
       });
@@ -707,6 +707,20 @@ export const YemenMapExperience: React.FC = () => {
                 <span className="hud-pulse"></span> خريطة تفاعلية ثلاثية الأبعاد (3D)
               </div>
               <div className="map-hud-title">خارطة المشاريع والانتشار الميداني — الجمهورية اليمنية</div>
+              <div className="map-legend-pills" aria-label="دليل ألوان الخارطة التفاعلية">
+                <span className="legend-item" title="البرتقالي الهادئ: التغطية الميدانية الشاملة">
+                  <span className="legend-dot default"></span>
+                  <span>تغطية شاملة</span>
+                </span>
+                <span className="legend-item" title="الذهبي المشع: المعاينة عند التحويم">
+                  <span className="legend-dot hover"></span>
+                  <span>معاينة تفاعلية</span>
+                </span>
+                <span className="legend-item" title="البرتقالي الأساسي لميون: المشروع والموقع المختار">
+                  <span className="legend-dot active"></span>
+                  <span>الموقع المختار</span>
+                </span>
+              </div>
             </div>
 
             <div className="map-hud-controls">
