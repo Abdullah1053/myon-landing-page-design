@@ -12,6 +12,16 @@ interface MarkerItem {
   baseZ: number;
 }
 
+// Responsive Camera Base Distance so Yemen 3D Map fits phone screens comfortably without clipping
+const getResponsiveBaseZoom = (width?: number) => {
+  const w = width ?? (typeof window !== 'undefined' ? window.innerWidth : 1200);
+  if (w <= 375) return 25.0; // Small phone portrait
+  if (w <= 480) return 23.5; // Standard mobile phone
+  if (w <= 640) return 22.0; // Large phone / phablet
+  if (w <= 992) return 20.0; // Tablet
+  return 18.2; // Desktop
+};
+
 export const YemenMapExperience: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -51,6 +61,7 @@ export const YemenMapExperience: React.FC = () => {
     lastY: number;
     autoRotatePaused: boolean;
     autoRotateResumeTimer: any;
+    hasCustomZoom: boolean;
   }>({
     targetRotX: 0,
     currentRotX: 0,
@@ -63,6 +74,7 @@ export const YemenMapExperience: React.FC = () => {
     lastY: 0,
     autoRotatePaused: false,
     autoRotateResumeTimer: null,
+    hasCustomZoom: false,
   });
 
   const govMeshMapRef = useRef<Map<string, THREE.Mesh[]>>(new Map());
@@ -124,7 +136,12 @@ export const YemenMapExperience: React.FC = () => {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
-    camera.position.set(0, 0, 18.2);
+    const ctrl = controlsRef.current;
+
+    const initialBaseZ = getResponsiveBaseZoom(stage.clientWidth || (typeof window !== 'undefined' ? window.innerWidth : 1200));
+    camera.position.set(0, 0, initialBaseZ);
+    ctrl.targetZoom = initialBaseZ;
+    ctrl.currentZoom = initialBaseZ;
 
     const resizeCanvas = () => {
       if (!canvas || !stage) return;
@@ -134,6 +151,12 @@ export const YemenMapExperience: React.FC = () => {
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
+
+      // Automatically adjust camera zoom to fit Yemen map on phones vs desktop
+      if (!ctrl.hasCustomZoom) {
+        const responsiveZ = getResponsiveBaseZoom(w);
+        ctrl.targetZoom = responsiveZ;
+      }
     };
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas, { passive: true });
@@ -447,7 +470,7 @@ export const YemenMapExperience: React.FC = () => {
     updateGovernorateStylesRef.current = updateStyles;
 
     // Pointer Drag & Orbit Controls
-    const ctrl = controlsRef.current;
+    // ctrl already initialized above
 
     const onPointerDown = (e: PointerEvent) => {
       ctrl.isPointerDown = true;
@@ -485,8 +508,9 @@ export const YemenMapExperience: React.FC = () => {
     // Wheel Zoom
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
+      ctrl.hasCustomZoom = true;
       ctrl.targetZoom += (e.deltaY > 0 ? 1 : -1) * 1.2;
-      ctrl.targetZoom = Math.max(13.0, Math.min(28.0, ctrl.targetZoom));
+      ctrl.targetZoom = Math.max(12.0, Math.min(32.0, ctrl.targetZoom));
     };
     stage.addEventListener('wheel', onWheel, { passive: false });
 
@@ -661,17 +685,22 @@ export const YemenMapExperience: React.FC = () => {
   const activeProject = projects[currentIdx] || projects[0];
 
   const handleReset = () => {
+    const w = stageRef.current?.clientWidth || (typeof window !== 'undefined' ? window.innerWidth : 1200);
+    const baseZ = getResponsiveBaseZoom(w);
     controlsRef.current.targetRotX = 0;
     controlsRef.current.targetRotY = 0;
-    controlsRef.current.targetZoom = 18.2;
+    controlsRef.current.targetZoom = baseZ;
+    controlsRef.current.hasCustomZoom = false;
   };
 
   const handleZoomIn = () => {
-    controlsRef.current.targetZoom = Math.max(13.0, controlsRef.current.targetZoom - 2.5);
+    controlsRef.current.hasCustomZoom = true;
+    controlsRef.current.targetZoom = Math.max(12.0, controlsRef.current.targetZoom - 2.5);
   };
 
   const handleZoomOut = () => {
-    controlsRef.current.targetZoom = Math.min(28.0, controlsRef.current.targetZoom + 2.5);
+    controlsRef.current.hasCustomZoom = true;
+    controlsRef.current.targetZoom = Math.min(32.0, controlsRef.current.targetZoom + 2.5);
   };
 
   const handlePrev = () => {
@@ -827,7 +856,8 @@ export const YemenMapExperience: React.FC = () => {
                   <circle cx="12" cy="12" r="3" />
                   <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
                 </svg>{' '}
-                اسحب للتدوير ثلاثي الأبعاد • انقر على أي موقع أو علامة للاطلاع على تفاصيل المشروع
+                <span className="hint-desktop">اسحب للتدوير ثلاثي الأبعاد • انقر على أي موقع أو علامة للاطلاع على تفاصيل المشروع</span>
+                <span className="hint-mobile">اسحب للتدوير 3D • انقر على أي موقع للاطلاع</span>
               </span>
             </div>
           </div>

@@ -429,6 +429,12 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--orange);outline-off
   display: inline-block;
   vertical-align: middle;
 }
+.hint-desktop {
+  display: inline;
+}
+.hint-mobile {
+  display: none;
+}
 
 /* Screen Projected HTML Pin Badges */
 .yemen-pins-overlay {
@@ -1953,6 +1959,201 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--orange);outline-off
   }
   .spec-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE OPTIMIZATIONS — 3D YEMEN MAP EXPERIENCE
+   Minimizes map size on phones and accommodates mobile viewports
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 992px) {
+  .yemen-map-stage {
+    height: clamp(360px, 48vh, 440px);
+  }
+}
+
+@media (max-width: 640px) {
+  #experience {
+    padding: 48px 0 56px;
+  }
+  .experience-head {
+    margin-bottom: 22px;
+  }
+  .experience-head h2 {
+    font-size: clamp(26px, 7.5vw, 34px);
+  }
+  .experience-head p {
+    font-size: 13px;
+    line-height: 1.65;
+    margin-top: 10px;
+  }
+
+  /* Minimized Map Card & Stage for Phone View */
+  .yemen-map-card {
+    border-radius: 16px;
+    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.06);
+  }
+  .yemen-map-stage {
+    height: 300px; /* Minimized height so the whole map stage fits on mobile screens */
+    touch-action: pan-y; /* Allows smooth page scroll on vertical touch */
+  }
+
+  /* Compact Mobile HUD Header */
+  .map-hud-top {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+  .map-hud-meta {
+    width: 100%;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .map-hud-badge {
+    font-size: 11px;
+    padding: 4px 10px;
+    gap: 6px;
+  }
+  .hud-pulse {
+    width: 6px;
+    height: 6px;
+  }
+  .map-hud-title {
+    display: none; /* Hide subtitle to preserve precious mobile viewport space */
+  }
+  .map-legend-pills {
+    gap: 8px;
+    padding: 3px 10px;
+    font-size: 10px;
+  }
+  .legend-dot {
+    width: 7px;
+    height: 7px;
+  }
+  .map-hud-controls {
+    width: 100%;
+    justify-content: space-between;
+    gap: 6px;
+    margin-top: 2px;
+  }
+  .map-ctrl-btn {
+    padding: 6px 12px;
+    font-size: 11.5px;
+    gap: 5px;
+  }
+  .map-ctrl-btn svg {
+    width: 13px;
+    height: 13px;
+  }
+  .map-ctrl-btn.icon-only {
+    width: 30px;
+    height: 30px;
+    padding: 4px;
+    border-radius: 8px;
+  }
+
+  /* Streamlined Hint Bar & Watermark on Phone */
+  .map-watermark {
+    font-size: 8.5px;
+    top: 10px;
+    left: 12px;
+    letter-spacing: .12em;
+    opacity: 0.65;
+  }
+  .hint-desktop {
+    display: none;
+  }
+  .hint-mobile {
+    display: inline;
+  }
+  .map-hint-bar {
+    bottom: 8px;
+    font-size: 9.5px;
+    padding: 4px 12px;
+    max-width: 92%;
+    white-space: normal;
+    text-align: center;
+    gap: 6px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  }
+
+  /* Compact Map Pins for Mobile Screens */
+  .yemen-map-pin .pin-badge {
+    padding: 3px 8px;
+    font-size: 10px;
+    gap: 4px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+  .yemen-map-pin .pin-badge .pin-tag {
+    font-size: 10px;
+  }
+  .pin-beacon-core {
+    width: 14px;
+    height: 14px;
+  }
+  .pin-dot {
+    width: 7px;
+    height: 7px;
+  }
+  .pin-pulse-ring {
+    inset: -4px;
+  }
+
+  /* Locations Filter Row on Phone */
+  .map-locations-bar {
+    padding: 10px 14px;
+  }
+  .locations-bar-header {
+    margin-bottom: 8px;
+  }
+  .locations-bar-title {
+    font-size: 12px;
+  }
+  .locations-count-tag {
+    font-size: 10px;
+    padding: 2px 7px;
+  }
+  .locations-pills {
+    gap: 7px;
+    padding-bottom: 4px;
+  }
+  .loc-pill {
+    padding: 6px 14px;
+    font-size: 12px;
+    gap: 5px;
+  }
+
+  /* Project Details Area on Phone */
+  .project-details-area {
+    margin-top: 28px;
+  }
+  .project-details-header {
+    margin-bottom: 16px;
+  }
+  .details-active-city {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .yemen-map-stage {
+    height: 265px; /* Ultra-compact height for smaller phone displays */
+  }
+  .map-legend-pills {
+    display: none; /* Keep top row clean and uncluttered on narrowest screens */
+  }
+  .map-ctrl-btn {
+    padding: 5px 9px;
+    font-size: 10.5px;
+  }
+  .yemen-map-pin .pin-badge {
+    padding: 2px 6px;
+    font-size: 9.5px;
+  }
+  .loc-pill {
+    padding: 5px 11px;
+    font-size: 11px;
   }
 }
 
