@@ -4,7 +4,7 @@
  * Generated for MYON Cinematic Landing Page
  */
 
-window.YEMEN_MAP_DATA = {
+export const YEMEN_MAP_DATA = {
   bounds: {
     centerLon: 47.8,
     centerLat: 15.6,
