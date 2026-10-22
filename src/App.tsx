@@ -11,6 +11,7 @@ import { Services } from './components/Services';
 import { WhyUs } from './components/WhyUs';
 import { Stats } from './components/Stats';
 import { Process } from './components/Process';
+import { RegionalNetwork } from './components/RegionalNetwork';
 import { YemenMapExperience } from './components/YemenMapExperience';
 import { ContactCTA } from './components/ContactCTA';
 import { Footer } from './components/Footer';
@@ -141,6 +142,7 @@ export const App: React.FC = () => {
         <WhyUs />
         <Stats />
         <Process />
+        <RegionalNetwork onNavigate={handleNavigate} />
         <YemenMapExperience />
         <ContactCTA />
       </main>

@@ -23,6 +23,17 @@ export const ContactCTA: React.FC = () => {
               استكشف خدماتنا
             </a>
           </div>
+          {/* Regional Quick Contact Points */}
+          <div className="cta-regions-pills reveal">
+            <span className="cta-regions-label">قنوات التواصل الإقليمية المباشرة:</span>
+            <div className="cta-reg-tags">
+              <span className="cta-reg-tag">🇸🇦 السعودية: الرياض · جدة · الدمام</span>
+              <span className="cta-reg-tag">🇾🇪 اليمن: عدن · صنعاء · المكلا</span>
+              <span className="cta-reg-tag">🇨🇳 الصين: كوانزو · ييوو</span>
+              <span className="cta-reg-tag">🇺🇸 أمريكا: هيوستن · نيويورك</span>
+            </div>
+          </div>
+
           <div className="cta-contact reveal">
             <a href="mailto:info@myon.sa">
               <svg viewBox="0 0 24 24">

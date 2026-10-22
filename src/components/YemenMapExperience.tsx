@@ -717,7 +717,7 @@ export const YemenMapExperience: React.FC = () => {
     <section id="experience" data-ambient="#F4F6F9" data-glow=".2">
       <div className="wrap">
         <div className="section-head text-center experience-head">
-          <span className="idx reveal">٠٤ — خبراتنا ومشاريعنا السابقة</span>
+          <span className="idx reveal">٠٥ — البصمة الميدانية ومشاريع اليمن</span>
           <h2 className="reveal">
             بصمتنا الميدانية<br />
             <span className="orange-text">عبر خارطة اليمن</span>

@@ -77,6 +77,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 </a>
               </li>
               <li>
+                <a href="#regions" onClick={(e) => handleNav(e, 'regions')}>
+                  أقاليمنا وفروعنا
+                </a>
+              </li>
+              <li>
                 <a href="#experience" onClick={(e) => handleNav(e, 'experience')}>
                   مشاريعنا في اليمن
                 </a>
@@ -90,7 +95,33 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
 
           <div className="footer-col">
-            <h5>خدماتنا</h5>
+            <h5>أقاليمنا وفروعنا الدولية</h5>
+            <ul style={{ lineHeight: 1.8 }}>
+              <li>
+                <a href="#regions" onClick={(e) => handleNav(e, 'regions')}>
+                  <strong>🇸🇦 السعودية:</strong> الرياض · جدة · الدمام
+                </a>
+              </li>
+              <li>
+                <a href="#regions" onClick={(e) => handleNav(e, 'regions')}>
+                  <strong>🇾🇪 اليمن:</strong> عدن · صنعاء · المكلا · مأرب
+                </a>
+              </li>
+              <li>
+                <a href="#regions" onClick={(e) => handleNav(e, 'regions')}>
+                  <strong>🇨🇳 الصين:</strong> كوانزو · ييوو · شنغهاي
+                </a>
+              </li>
+              <li>
+                <a href="#regions" onClick={(e) => handleNav(e, 'regions')}>
+                  <strong>🇺🇸 أمريكا:</strong> هيوستن (تكساس) · نيويورك
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="footer-col">
+            <h5>تخصصاتنا</h5>
             <ul>
               <li>
                 <a href="#services" onClick={(e) => handleNav(e, 'services')}>
@@ -99,17 +130,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li>
                 <a href="#services" onClick={(e) => handleNav(e, 'services')}>
-                  خدمات النقل
+                  خدمات النقل البري
                 </a>
               </li>
               <li>
                 <a href="#services" onClick={(e) => handleNav(e, 'services')}>
-                  الخدمات النفطية
+                  الخدمات النفطية التخصصية
                 </a>
               </li>
               <li>
                 <a href="#services" onClick={(e) => handleNav(e, 'services')}>
-                  الشحن والتخليص الجمركي
+                  التوريد والشحن الدولي
                 </a>
               </li>
             </ul>
@@ -121,8 +152,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             حقوق النشر &copy; 2025 — <a href="#">ميون للمقاولات واللوجستيات</a>. جميع الحقوق محفوظة.
           </div>
           <div className="footer-cr">
-            <span className="latin" style={{ fontSize: '11px', letterSpacing: '.2em', color: 'var(--text-faint)' }}>
-              MYON · KSA
+            <span className="latin" style={{ fontSize: '11px', letterSpacing: '.18em', color: 'var(--text-faint)' }}>
+              MYON GLOBAL · KSA · YEMEN · CHINA · USA
             </span>
           </div>
         </div>

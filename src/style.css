@@ -143,12 +143,17 @@ section{position:relative;z-index:2}
 .btn-primary:hover{transform:translateY(-4px);box-shadow:0 26px 56px -16px rgba(232,91,26,.9)}
 .btn-ghost{border:1px solid rgba(232,91,26,.45);color:var(--orange);background:#FFFFFF}
 .btn-ghost:hover{background:var(--orange);color:#fff;transform:translateY(-4px)}
-.cta-contact{margin-top:40px;display:flex;gap:32px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+.cta-regions-pills{margin-top:36px;display:flex;flex-direction:column;align-items:center;gap:12px;position:relative;z-index:1}
+.cta-regions-label{font-family:"El Messiri",serif;font-size:14px;font-weight:600;color:var(--orange)}
+.cta-reg-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.cta-reg-tag{font-size:12.5px;padding:6px 16px;background:#FFFFFF;border:1px solid rgba(232,91,26,0.25);border-radius:999px;color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.03);transition:all .3s}
+.cta-reg-tag:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:0 6px 16px rgba(232,91,26,0.15)}
+.cta-contact{margin-top:28px;display:flex;gap:32px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
 .cta-contact a{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-soft);font-size:14px;transition:color .3s}
 .cta-contact a:hover{color:var(--orange)}
 .cta-contact svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 footer{padding:10vh 0 5vh;border-top:1px solid var(--line);background:#F6F8FA}
-.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:clamp(32px,5vw,64px)}
+.footer-grid{display:grid;grid-template-columns:1.3fr 0.8fr 1.3fr 0.9fr;gap:clamp(24px,4vw,56px)}
 .footer-brand img{height:64px;width:auto;object-fit:contain;margin-bottom:20px;filter:none}
 .footer-desc{font-size:14px;color:var(--text-soft);line-height:1.8;max-width:34ch}
 .footer-col h5{font-family:"El Messiri",serif;font-size:17px;font-weight:600;margin-bottom:20px;color:var(--text)}
@@ -2186,6 +2191,873 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--orange);outline-off
   .loc-pill {
     padding: 5px 11px;
     font-size: 11px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REGIONAL NETWORK & INTERNATIONAL BRANCHES (الأقاليم والفروع)
+   Saudi Arabia · Yemen · China · United States of America
+   ═══════════════════════════════════════════════════════════ */
+
+.regions-section {
+  padding: 14vh 0 10vh;
+  position: relative;
+}
+
+/* Global Corridors Card (Interactive World SVG) */
+.global-corridors-card {
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 14px 40px -10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 38px;
+  position: relative;
+}
+
+.corridors-hud-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 26px;
+  background: #FAFCFE;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.corridors-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "El Messiri", serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.corridor-pulse-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 0 0 rgba(232, 91, 26, 0.7);
+  animation: corridorPulse 2s infinite;
+}
+
+@keyframes corridorPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(232, 91, 26, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 9px rgba(232, 91, 26, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(232, 91, 26, 0);
+  }
+}
+
+.corridors-latin {
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.16em;
+}
+
+.world-canvas-wrap {
+  width: 100%;
+  padding: 12px 20px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F9FBFC 100%);
+  position: relative;
+}
+
+.world-svg-map {
+  width: 100%;
+  height: auto;
+  max-height: 440px;
+  display: block;
+}
+
+/* Corridor animations */
+.animated-corridor-arc {
+  animation: corridorDash 2.4s linear infinite;
+}
+
+.animated-corridor-arc-reverse {
+  animation: corridorDashReverse 3s linear infinite;
+}
+
+.animated-corridor-direct {
+  stroke-dasharray: 4 4;
+  animation: corridorDash 1.2s linear infinite;
+}
+
+@keyframes corridorDash {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes corridorDashReverse {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: 24;
+  }
+}
+
+.node-pulse-circle {
+  transform-origin: center;
+  animation: nodeRadar 2.6s ease-out infinite;
+}
+
+@keyframes nodeRadar {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+.map-interactive-node {
+  transition: transform 0.3s var(--ease);
+}
+
+.map-interactive-node:hover {
+  filter: drop-shadow(0 6px 14px rgba(232, 91, 26, 0.35));
+}
+
+.corridors-legend-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 3vw, 28px);
+  padding: 12px 20px;
+  background: #FAFCFE;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.legend-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+.legend-tag .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legend-tag .dot.dot-hq {
+  background: #E85B1A;
+  box-shadow: 0 0 0 3px rgba(232, 91, 26, 0.2);
+}
+
+.legend-tag .dot.dot-field {
+  background: #0F766E;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.2);
+}
+
+.legend-tag .dot.dot-source {
+  background: #C2410C;
+  box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.2);
+}
+
+.legend-tag .dot.dot-intl {
+  background: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* Region Nav Tabs */
+.regions-nav-pills {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.region-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  cursor: pointer;
+  text-align: right;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s var(--ease);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.region-tab-btn:hover {
+  border-color: rgba(232, 91, 26, 0.35);
+  background: #FFFBF9;
+  transform: translateY(-2px);
+}
+
+.region-tab-btn.active {
+  background: #FFFFFF;
+  border-color: var(--orange);
+  box-shadow: 0 10px 28px -8px rgba(232, 91, 26, 0.22);
+}
+
+.region-tab-btn.active::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--orange-bright), var(--orange));
+}
+
+.tab-flag {
+  font-size: 26px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.tab-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow: hidden;
+}
+
+.tab-name {
+  font-family: "El Messiri", serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.region-tab-btn.active .tab-name {
+  color: var(--orange);
+}
+
+.tab-sub {
+  font-size: 11.5px;
+  color: var(--text-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Region Showcase Card */
+.region-showcase-card {
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(28px, 4vw, 48px);
+  box-shadow: 0 16px 44px -12px rgba(0, 0, 0, 0.06);
+  margin-bottom: 48px;
+}
+
+.region-banner {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: clamp(32px, 5vw, 64px);
+  align-items: start;
+  padding-bottom: 34px;
+  border-bottom: 1px solid var(--line);
+}
+
+.region-meta-badges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.region-country-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #F1F4F8;
+  border: 1px solid #D9E1EB;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  font-family: "Cormorant Garamond", serif;
+  letter-spacing: 0.06em;
+}
+
+.region-role-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(232, 91, 26, 0.08);
+  border: 1px solid rgba(232, 91, 26, 0.2);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--orange);
+}
+
+.region-hub-pill {
+  display: inline-flex;
+  align-items: center;
+  background: #FAFCFE;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 11.5px;
+  color: var(--text-soft);
+}
+
+.region-title {
+  font-size: clamp(28px, 3.8vw, 46px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+
+.region-tagline {
+  font-size: clamp(15px, 1.6vw, 18px);
+  color: var(--orange);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.region-desc {
+  font-size: clamp(14px, 1.4vw, 16px);
+  color: var(--text-soft);
+  line-height: 1.85;
+}
+
+/* Regional Stats Box */
+.region-stats-box {
+  background: linear-gradient(135deg, #FFF9F5 0%, #FFFFFF 100%);
+  border: 1px solid rgba(232, 91, 26, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.rstats-head {
+  font-family: "El Messiri", serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--orange);
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed rgba(232, 91, 26, 0.2);
+}
+
+.rstats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.rstat-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.rstat-num {
+  font-family: "El Messiri", serif;
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.rstat-lbl {
+  font-size: 12px;
+  color: var(--text-soft);
+  margin-top: 4px;
+}
+
+/* Regional Corridors Bar */
+.region-corridors-bar {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.corridors-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "El Messiri", serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.corridors-title svg {
+  width: 17px;
+  height: 17px;
+  color: var(--orange);
+}
+
+.corridors-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.corridor-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  font-size: 12.5px;
+  color: var(--text-soft);
+}
+
+.corridor-chip .chip-bullet {
+  color: var(--orange);
+  font-size: 9px;
+}
+
+/* Branches Section */
+.region-branches-wrapper {
+  padding: 32px 0 24px;
+}
+
+.branches-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.branches-section-title h4 {
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.branches-count-pill {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--orange);
+  background: rgba(232, 91, 26, 0.08);
+  border: 1px solid rgba(232, 91, 26, 0.2);
+  border-radius: 999px;
+  padding: 4px 14px;
+}
+
+.branches-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.branch-card {
+  background: #FAFCFE;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.35s var(--ease);
+  position: relative;
+}
+
+.branch-card:hover {
+  background: #FFFFFF;
+  border-color: rgba(232, 91, 26, 0.35);
+  box-shadow: 0 12px 30px -10px rgba(232, 91, 26, 0.16);
+  transform: translateY(-3px);
+}
+
+.branch-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.branch-icon-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(232, 91, 26, 0.09);
+  border: 1px solid rgba(232, 91, 26, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--orange);
+}
+
+.branch-icon-wrap svg {
+  width: 22px;
+  height: 22px;
+}
+
+.branch-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.branch-type-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--orange);
+  font-family: "El Messiri", serif;
+}
+
+.branch-name {
+  font-family: "El Messiri", serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.branch-name-en {
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+}
+
+.branch-address-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-soft);
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.branch-address-row svg {
+  width: 15px;
+  height: 15px;
+  color: var(--orange);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.branch-highlight {
+  font-size: 13px;
+  color: var(--text-soft);
+  margin-bottom: 14px;
+  line-height: 1.65;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.branch-highlight strong {
+  color: var(--text);
+}
+
+.branch-services-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.bs-tag {
+  font-size: 11.5px;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: #EEF2F6;
+  color: #334155;
+  border: 1px solid #E2E8F0;
+}
+
+.branch-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.branch-contact-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.b-contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-soft);
+  text-decoration: none;
+  transition: color 0.25s;
+}
+
+.b-contact-item:hover {
+  color: var(--orange);
+}
+
+.b-contact-item svg {
+  width: 14px;
+  height: 14px;
+}
+
+.branch-action-btn {
+  font-family: "El Messiri", serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--orange);
+  text-decoration: none;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(232, 91, 26, 0.35);
+  background: #FFFFFF;
+  transition: all 0.25s;
+}
+
+.branch-action-btn:hover {
+  background: var(--orange);
+  color: #FFFFFF;
+}
+
+/* Contextual Action Bar */
+.region-action-bar {
+  margin-top: 18px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.region-action-box {
+  background: linear-gradient(135deg, #FFF9F5 0%, #FFFFFF 100%);
+  border: 1px solid rgba(232, 91, 26, 0.22);
+  border-radius: 14px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.region-action-box .action-text h5 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.region-action-box .action-text p {
+  font-size: 14px;
+  color: var(--text-soft);
+  max-width: 55ch;
+}
+
+/* All Regions Matrix */
+.regions-matrix-wrap {
+  margin-top: 20px;
+}
+
+.matrix-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.matrix-title {
+  font-family: "El Messiri", serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.matrix-subtitle {
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.16em;
+}
+
+.regions-matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.matrix-card {
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.matrix-card:hover {
+  border-color: rgba(232, 91, 26, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.05);
+}
+
+.matrix-card.active {
+  border-color: var(--orange);
+  background: #FFFDFB;
+  box-shadow: 0 8px 24px -6px rgba(232, 91, 26, 0.2);
+}
+
+.m-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.m-flag {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.m-code {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--orange);
+  background: rgba(232, 91, 26, 0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.m-name {
+  font-family: "El Messiri", serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.m-role {
+  font-size: 11.5px;
+  color: var(--orange);
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.m-branches-list {
+  border-top: 1px dashed var(--line);
+  padding-top: 12px;
+  margin-top: 6px;
+  margin-bottom: 16px;
+}
+
+.m-branches-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-soft);
+  margin-bottom: 8px;
+}
+
+.m-branches-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.m-branches-list li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+.m-bullet {
+  color: var(--orange);
+  font-size: 8px;
+}
+
+.m-card-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "El Messiri", serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--orange);
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.m-card-action svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.25s;
+}
+
+.matrix-card:hover .m-card-action svg {
+  transform: translateX(-4px);
+}
+
+/* Responsive Breakpoints for Regional Network */
+@media (max-width: 1024px) {
+  .regions-nav-pills {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .regions-matrix-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .region-banner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .regions-nav-pills {
+    grid-template-columns: 1fr;
+  }
+  .regions-matrix-grid {
+    grid-template-columns: 1fr;
+  }
+  .branches-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .region-action-box {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .region-action-box .btn {
+    width: 100%;
+    text-align: center;
   }
 }
 

@@ -68,6 +68,9 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
           <a href="#process" onClick={(e) => handleLinkClick(e, '#process')}>
             كيف نعمل
           </a>
+          <a href="#regions" onClick={(e) => handleLinkClick(e, '#regions')}>
+            أقاليمنا وفروعنا
+          </a>
           <a href="#experience" onClick={(e) => handleLinkClick(e, '#experience')}>
             مشاريعنا في اليمن
           </a>
@@ -159,6 +162,13 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate }) => {
               onClick={(e) => handleLinkClick(e, '#process')}
             >
               كيف نعمل
+            </a>
+            <a
+              href="#regions"
+              style={{ color: 'var(--text)', textDecoration: 'none', fontSize: '18px', fontWeight: 600 }}
+              onClick={(e) => handleLinkClick(e, '#regions')}
+            >
+              أقاليمنا وفروعنا
             </a>
             <a
               href="#experience"

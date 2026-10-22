@@ -48,3 +48,35 @@ export interface SpecDetail {
   specs: { label: string; val: string }[];
   features: string[];
 }
+
+export interface BranchInfo {
+  id: string;
+  nameAr: string;
+  nameEn: string;
+  city: string;
+  type: string;
+  address: string;
+  highlight: string;
+  phone?: string;
+  email?: string;
+  services: string[];
+}
+
+export interface RegionInfo {
+  id: string;
+  nameAr: string;
+  nameEn: string;
+  countryCode: string;
+  flagEmoji: string;
+  roleBadge: string;
+  tagline: string;
+  overview: string;
+  strategicImportance: string;
+  branches: BranchInfo[];
+  services: string[];
+  stats: { label: string; val: string }[];
+  corridors: string[];
+  hubCity: string;
+  badgeColor?: string;
+}
+
