@@ -11,8 +11,7 @@ import { Services } from './components/Services';
 import { WhyUs } from './components/WhyUs';
 import { Stats } from './components/Stats';
 import { Process } from './components/Process';
-import { RegionalNetwork } from './components/RegionalNetwork';
-import { YemenMapExperience } from './components/YemenMapExperience';
+import { UnifiedMapExperience, UnifiedMapExperienceRef } from './components/UnifiedMapExperience';
 import { ContactCTA } from './components/ContactCTA';
 import { Footer } from './components/Footer';
 import { SpecModal } from './components/SpecModal';
@@ -28,6 +27,7 @@ ScrollTrigger.config({
 export const App: React.FC = () => {
   const [activeHotspot, setActiveHotspot] = useState<string | null>(null);
   const lenisRef = React.useRef<Lenis | null>(null);
+  const mapRef = React.useRef<UnifiedMapExperienceRef>(null);
 
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -115,6 +115,24 @@ export const App: React.FC = () => {
   }, []);
 
   const handleNavigate = (id: string) => {
+    if (id === 'regions') {
+      if (mapRef.current) mapRef.current.focusMiddleEast();
+      const target = document.getElementById('regions');
+      if (target) {
+        if (lenisRef.current) lenisRef.current.scrollTo(target, { offset: 0 });
+        else target.scrollIntoView({ behavior: 'smooth' });
+      }
+      return;
+    }
+    if (id === 'experience') {
+      if (mapRef.current) mapRef.current.focusYemen();
+      const target = document.getElementById('projectDetailsArea') || document.getElementById('experience') || document.getElementById('regions');
+      if (target) {
+        if (lenisRef.current) lenisRef.current.scrollTo(target, { offset: 0 });
+        else target.scrollIntoView({ behavior: 'smooth' });
+      }
+      return;
+    }
     const target = document.getElementById(id);
     if (target) {
       if (lenisRef.current) {
@@ -142,8 +160,7 @@ export const App: React.FC = () => {
         <WhyUs />
         <Stats />
         <Process />
-        <RegionalNetwork onNavigate={handleNavigate} />
-        <YemenMapExperience />
+        <UnifiedMapExperience ref={mapRef} onNavigate={handleNavigate} />
         <ContactCTA />
       </main>
 

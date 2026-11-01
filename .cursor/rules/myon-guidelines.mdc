@@ -1,0 +1,32 @@
+# Myon Creative & Engineering Guidelines (Karpathy-Adapted)
+
+Behavioral guidelines to ensure high-craft creative UI/UX without LLM code bloat or accidental regressions.
+
+## 1. Think Before Designing or Coding
+**Don't assume visual direction. Surface layout and motion tradeoffs.**
+- Before implementing new sections or animations, state your visual and structural assumptions explicitly.
+- If a design request is ambiguous, propose 2 distinct creative directions (e.g., editorial/minimal vs. theatrical/interactive) rather than guessing silently.
+- Respect the Arabic RTL flow (`El Messiri` for headings, `Tajawal` for body) paired with luxury Latin uppercase accents (`Cormorant Garamond` with wide letter-spacing).
+
+## 2. Architectural Simplicity, Visual Richness
+**Simple code structure. High-craft visual execution. Never confuse the two.**
+- **Code Simplicity:** Write flat, readable React/TypeScript. No unnecessary custom hooks, over-abstracted helper classes, or state libraries. Keep data in `src/data/` and styles in `src/style.css`.
+- **Visual Craft (No "AI Slop"):** Do NOT simplify visual aesthetics into generic, flat templates. Maintain the established luxury industrial aesthetic:
+  - Primary Vermilion Orange (`#E85B1A`), Deep Orange (`#C74A10`), Bright Orange (`#FF6B2B`), Crisp Ink/Surface (`#FFFFFF` / `#F6F8FA`), Dark Text (`#14171C`).
+  - Use subtle borders (`rgba(0,0,0,0.08)`), layered ambient glows, glassmorphic backdrops (`backdrop-filter: blur()`), and smooth cubic-bezier transitions (`cubic-bezier(.22,.61,.36,1)`).
+
+## 3. Surgical Changes (Strict Protection)
+**Touch only what you must. Protect existing 3D, SVG, and GSAP pipelines.**
+- Do NOT "improve", reformat, or refactor adjacent code, CSS rules, SVG coordinates, or comments.
+- **Protected Zones:** Do not alter the crane/container GSAP timeline in `HeroStage.tsx`, the Three.js extrude/raycasting logic in `YemenMapExperience.tsx`, or the `Lenis` smooth-scroll configuration in `App.tsx` unless explicitly instructed.
+- When adding styles to `src/style.css`, scope them cleanly to the target component without mutating global variables or unrelated media queries.
+- Every changed line must trace directly to the user's request.
+
+## 4. Goal-Driven Creative Execution
+**Define visual and performance criteria. Verify before completing.**
+Transform creative and UI tasks into verifiable checks:
+- **Performance:** Animations must use zero-reflow properties (`transform: translate3d`, `opacity`) and clean up `ScrollTrigger` / `requestAnimationFrame` / `IntersectionObserver` instances on unmount.
+- **Responsiveness:** Every layout and 3D canvas must degrade gracefully on mobile (`<= 768px`) and respect touch pointer events (`pointer: coarse`).
+- **Plan Format:** For multi-step UI changes, state a brief plan:
+  1. [Component/Style Change] → verify: [Visual/RTL/Responsive check]
+  2. [Animation/Interaction] → verify: [60fps & cleanup check]
