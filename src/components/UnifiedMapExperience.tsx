@@ -91,11 +91,11 @@ const getResponsiveBaseZoom = (width?: number) => {
 
 const getResponsiveMiddleEastZoom = (width?: number) => {
   const w = width ?? (typeof window !== 'undefined' ? window.innerWidth : 1200);
-  if (w <= 375) return 58.0;
-  if (w <= 480) return 54.0;
-  if (w <= 640) return 48.0;
-  if (w <= 992) return 44.0;
-  return 38.5;
+  if (w <= 375) return 66.0;
+  if (w <= 480) return 62.0;
+  if (w <= 640) return 55.0;
+  if (w <= 992) return 50.0;
+  return 46.0;
 };
 
 export interface UnifiedMapExperienceRef {
@@ -162,12 +162,12 @@ export const UnifiedMapExperience = forwardRef<UnifiedMapExperienceRef, UnifiedM
       autoRotateResumeTimer: any;
       hasCustomZoom: boolean;
     }>({
-      targetRotX: -0.42,
-      currentRotX: -0.42,
-      targetRotY: 0.05,
-      currentRotY: 0.05,
-      targetZoom: 38.5,
-      currentZoom: 38.5,
+      targetRotX: 0.44,
+      currentRotX: 0.44,
+      targetRotY: -0.12,
+      currentRotY: -0.12,
+      targetZoom: 46.0,
+      currentZoom: 46.0,
       targetPanX: 0,
       currentPanX: 0,
       targetPanY: 10.0,
@@ -191,7 +191,7 @@ export const UnifiedMapExperience = forwardRef<UnifiedMapExperienceRef, UnifiedM
       REGIONS_DATA.find((r) => r.id === activeRegionId) || REGIONS_DATA[0];
 
     // Smooth Glide Camera Focus Actions
-    const glideTo = (panX: number, panY: number, zoom: number, rotX = -0.42, rotY = 0.05) => {
+    const glideTo = (panX: number, panY: number, zoom: number, rotX = 0.44, rotY = -0.12) => {
       controlsRef.current.targetPanX = panX;
       controlsRef.current.targetPanY = panY;
       controlsRef.current.targetZoom = zoom;
@@ -203,7 +203,7 @@ export const UnifiedMapExperience = forwardRef<UnifiedMapExperienceRef, UnifiedM
     const focusMiddleEast = () => {
       setCurrentFocus('middle-east');
       const w = stageRef.current?.clientWidth || 1200;
-      glideTo(0, 10.5, getResponsiveMiddleEastZoom(w), -0.44, 0.04);
+      glideTo(0, 10.0, getResponsiveMiddleEastZoom(w), 0.44, -0.12);
       selectedCountryIdRef.current = null;
       selectedGovIdRef.current = null;
       if (updateMeshStylesRef.current) updateMeshStylesRef.current();
@@ -212,7 +212,7 @@ export const UnifiedMapExperience = forwardRef<UnifiedMapExperienceRef, UnifiedM
     const focusSaudi = () => {
       setCurrentFocus('saudi');
       setActiveRegionId('saudi');
-      glideTo(-1.5, 12.0, 25.0, -0.40, 0.05);
+      glideTo(-1.5, 12.0, 28.0, 0.42, -0.08);
       selectedCountryIdRef.current = 'SAU';
       selectedGovIdRef.current = null;
       if (updateMeshStylesRef.current) updateMeshStylesRef.current();
@@ -222,7 +222,7 @@ export const UnifiedMapExperience = forwardRef<UnifiedMapExperienceRef, UnifiedM
       setCurrentFocus('yemen');
       setActiveRegionId('yemen');
       const w = stageRef.current?.clientWidth || 1200;
-      glideTo(-1.5, -1.8, getResponsiveBaseZoom(w), -0.45, 0.0);
+      glideTo(-1.5, -1.8, getResponsiveBaseZoom(w), 0.40, -0.05);
       selectedCountryIdRef.current = null;
       selectedGovIdRef.current = projects[currentIdx]?.govId || 'YE-AD';
       if (updateMeshStylesRef.current) updateMeshStylesRef.current();
@@ -235,7 +235,7 @@ export const UnifiedMapExperience = forwardRef<UnifiedMapExperienceRef, UnifiedM
     const focusChina = () => {
       setCurrentFocus('china');
       setActiveRegionId('china');
-      glideTo(22.0, 14.0, 30.0, -0.38, -0.15);
+      glideTo(22.0, 14.0, 32.0, 0.38, -0.15);
       selectedCountryIdRef.current = null;
       selectedGovIdRef.current = null;
       if (updateMeshStylesRef.current) updateMeshStylesRef.current();
@@ -244,7 +244,7 @@ export const UnifiedMapExperience = forwardRef<UnifiedMapExperienceRef, UnifiedM
     const focusUSA = () => {
       setCurrentFocus('usa');
       setActiveRegionId('usa');
-      glideTo(-26.0, 17.0, 30.0, -0.38, 0.18);
+      glideTo(-26.0, 17.0, 32.0, 0.38, 0.15);
       selectedCountryIdRef.current = null;
       selectedGovIdRef.current = null;
       if (updateMeshStylesRef.current) updateMeshStylesRef.current();
@@ -267,7 +267,7 @@ export const UnifiedMapExperience = forwardRef<UnifiedMapExperienceRef, UnifiedM
       setCurrentFocus('yemen');
 
       // Pan slightly to project
-      glideTo(proj.projected[0], proj.projected[1], 18.0, -0.45, 0.0);
+      glideTo(proj.projected[0], proj.projected[1], 18.0, 0.40, -0.05);
 
       if (updateMeshStylesRef.current) updateMeshStylesRef.current();
 
@@ -809,7 +809,7 @@ export const UnifiedMapExperience = forwardRef<UnifiedMapExperienceRef, UnifiedM
         controlsRef.current.targetRotX += dy * 0.005;
 
         // Clamp vertical pitch to prevent flipping
-        controlsRef.current.targetRotX = Math.max(-1.1, Math.min(-0.15, controlsRef.current.targetRotX));
+        controlsRef.current.targetRotX = Math.max(0.12, Math.min(0.85, controlsRef.current.targetRotX));
       };
 
       const onPointerUp = () => {
